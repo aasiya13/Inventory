@@ -25,6 +25,7 @@ public class LogInForm extends javax.swing.JFrame {
      */
     public LogInForm() {
         initComponents();
+        init();
     }
     
     public LogInForm(java.awt.Frame parent, boolean modal) {

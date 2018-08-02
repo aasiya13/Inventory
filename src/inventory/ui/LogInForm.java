@@ -5,7 +5,14 @@
  */
 package inventory.ui;
 
+import inventory.Controller.UserController;
+import inventory.models.User;
 import java.awt.Frame;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,6 +36,7 @@ public class LogInForm extends javax.swing.JFrame {
     
     public void init(){
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
     }
  
@@ -48,16 +56,16 @@ public class LogInForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        UserNametxt = new javax.swing.JTextField();
+        Passwordtxt = new javax.swing.JPasswordField();
+        loginbtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/login.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/loginPicR.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -78,19 +86,24 @@ public class LogInForm extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 51, 102));
         jLabel3.setText("Member Login");
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/padlock.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/lock.png"))); // NOI18N
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/user.png"))); // NOI18N
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jTextField1.setText("User Name");
+        UserNametxt.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        UserNametxt.setText("User Name");
 
-        jPasswordField1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        Passwordtxt.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(0, 51, 102));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Log In");
+        loginbtn.setBackground(new java.awt.Color(0, 51, 102));
+        loginbtn.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        loginbtn.setForeground(new java.awt.Color(255, 255, 255));
+        loginbtn.setText("Log In");
+        loginbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginbtnActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("All Rights Recieved");
 
@@ -110,10 +123,10 @@ public class LogInForm extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(29, 29, 29)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
+                            .addComponent(loginbtn)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                                .addComponent(jPasswordField1))
+                                .addComponent(UserNametxt, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                .addComponent(Passwordtxt))
                             .addComponent(jLabel5))))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
@@ -125,13 +138,13 @@ public class LogInForm extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(UserNametxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Passwordtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(jButton1)
+                .addComponent(loginbtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addContainerGap())
@@ -154,6 +167,26 @@ public class LogInForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
+        // TODO add your handling code here:
+        try {  
+            User user = new User("U001",UserNametxt.getText(), Passwordtxt.getText());
+         
+            if(UserController.authUser(user)) {
+                dispose();
+                new MainFrame(user).setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(this, "Invalid user name or password");
+                Passwordtxt.setText("");
+                UserNametxt.requestFocus();
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LogInForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LogInForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_loginbtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -191,7 +224,8 @@ public class LogInForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPasswordField Passwordtxt;
+    private javax.swing.JTextField UserNametxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -199,7 +233,6 @@ public class LogInForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton loginbtn;
     // End of variables declaration//GEN-END:variables
 }

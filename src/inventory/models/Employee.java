@@ -23,7 +23,11 @@ public class Employee {
     private String designation;
     private String assignDate;
     private byte[] img = null;
-
+    
+    public Employee(String employeeId, String employeeName){
+        this.employeeId = employeeId;
+        this.employeeName = employeeName;
+    }
 
     public Employee(String employeeId, String employeeName, String gender, String civilStatus, String address, String dateOfBirth, String nicNo, String landPhoneNo, String mobileNo, String email, String designation, String assignDate, byte[] img) {
         this.employeeId = employeeId;

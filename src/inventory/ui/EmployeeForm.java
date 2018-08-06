@@ -16,11 +16,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -39,6 +43,7 @@ public class EmployeeForm extends javax.swing.JFrame {
     public EmployeeForm() {
         initComponents();
         init();
+        updateEmployeeInfoTable();
     }
     
      public void init(){
@@ -94,22 +99,19 @@ public class EmployeeForm extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         EmployeeAddBtn = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        UpdateBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        ClearBtn = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        SearchNameTxt = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
+        SearchEmployeeIdTxt = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jButton7 = new javax.swing.JButton();
+        SearchDesignationTxt = new javax.swing.JTextField();
+        SearchBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        EmployeeInfoTable = new javax.swing.JTable();
         AssignDateTxt = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
 
@@ -163,15 +165,19 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addGap(0, 22, Short.MAX_VALUE))
         );
 
+        NameTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Gender");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Address");
 
-        CivilStatusCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CivilStatusCombo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        CivilStatusCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Married", "Single" }));
 
-        GenderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        GenderCombo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        GenderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         GenderCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GenderComboActionPerformed(evt);
@@ -182,26 +188,39 @@ public class EmployeeForm extends javax.swing.JFrame {
         jLabel5.setText("Date Of Birth");
 
         AdressTxt.setColumns(20);
+        AdressTxt.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         AdressTxt.setRows(5);
         jScrollPane1.setViewportView(AdressTxt);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Civil Status");
 
+        DateOfBirthTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Permenent No.");
+
+        DesignationTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Mobile No. ");
 
+        NicTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("NIC No.");
+
+        PermenentNoTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("Designation");
 
+        MobileNoTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Email");
+
+        EmailTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel13.setText("Name");
@@ -277,20 +296,30 @@ public class EmployeeForm extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(0, 102, 153));
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Update");
+        UpdateBtn.setBackground(new java.awt.Color(0, 102, 153));
+        UpdateBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        UpdateBtn.setForeground(new java.awt.Color(255, 255, 255));
+        UpdateBtn.setText("Update");
+        UpdateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateBtnActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(0, 102, 153));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Delete");
 
-        jButton3.setBackground(new java.awt.Color(0, 102, 153));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Clear");
+        ClearBtn.setBackground(new java.awt.Color(0, 102, 153));
+        ClearBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ClearBtn.setForeground(new java.awt.Color(255, 255, 255));
+        ClearBtn.setText("Clear");
+        ClearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearBtnActionPerformed(evt);
+            }
+        });
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Search Options", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14), new java.awt.Color(0, 102, 153))); // NOI18N
 
@@ -303,8 +332,13 @@ public class EmployeeForm extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel16.setText("Designation");
 
-        jButton7.setBackground(new java.awt.Color(0, 102, 153));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/search.png"))); // NOI18N
+        SearchBtn.setBackground(new java.awt.Color(0, 102, 153));
+        SearchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/search.png"))); // NOI18N
+        SearchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -312,29 +346,21 @@ public class EmployeeForm extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addGap(62, 62, 62)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox1))
+                        .addComponent(SearchNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
                             .addComponent(jLabel16))
                         .addGap(22, 22, 22)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox2))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox3)))))
-                .addGap(18, 18, 18)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SearchDesignationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SearchEmployeeIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(45, 45, 45)
+                .addComponent(SearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -343,28 +369,20 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel14)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel16)
-                                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jCheckBox3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jCheckBox2))))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(SearchNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(SearchEmployeeIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(SearchDesignationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(23, 23, 23)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(SearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -380,11 +398,11 @@ public class EmployeeForm extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addComponent(EmployeeAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(UpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(29, 29, 29))
         );
         jPanel5Layout.setVerticalGroup(
@@ -393,14 +411,15 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(EmployeeAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(UpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        EmployeeInfoTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        EmployeeInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -411,7 +430,15 @@ public class EmployeeForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        EmployeeInfoTable.setGridColor(new java.awt.Color(0, 51, 102));
+        EmployeeInfoTable.setSelectionBackground(new java.awt.Color(0, 51, 102));
+        EmployeeInfoTable.setShowVerticalLines(false);
+        EmployeeInfoTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EmployeeInfoTableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(EmployeeInfoTable);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -433,6 +460,8 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(51, Short.MAX_VALUE))
         );
+
+        AssignDateTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Assign Date");
@@ -619,13 +648,8 @@ public class EmployeeForm extends javax.swing.JFrame {
                 person_image = bos.toByteArray();
             }catch(IOException e){
                 JOptionPane.showMessageDialog(null, e);
-            }
-        
-            
+            }   
         Employee employee = new Employee("EM0001",NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
-        
-        
-        
         try {
             int res = EmployeeController.addEmployee(employee);
             if (res > 0) {
@@ -649,6 +673,137 @@ public class EmployeeForm extends javax.swing.JFrame {
         picLable.setIcon(imageIcon);
     }//GEN-LAST:event_uploadBtnActionPerformed
 
+    private void EmployeeInfoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmployeeInfoTableMouseClicked
+        // TODO add your handling code here:
+        int row = EmployeeInfoTable.getSelectedRow();
+        String employeeId = EmployeeInfoTable.getModel().getValueAt(row, 0).toString();
+        try {
+            Employee employee = EmployeeController.getEmployee(employeeId);
+            NameTxt.setText(employee.getEmployeeName());
+            GenderCombo.setSelectedItem(employee.getGender());
+            CivilStatusCombo.setSelectedItem(employee.getCivilStatus());
+            AdressTxt.setText(employee.getAddress());
+            DateOfBirthTxt.setText(employee.getDateOfBirth());
+            MobileNoTxt.setText(employee.getMobileNo());
+            PermenentNoTxt.setText(employee.getLandPhoneNo());
+            NicTxt.setText(employee.getNicNo());
+            EmailTxt.setText(employee.getEmail());
+            AssignDateTxt.setText(employee.getAssignDate());
+            DesignationTxt.setText(employee.getDesignation());
+  
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_EmployeeInfoTableMouseClicked
+
+    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
+        // TODO add your handling code here:
+            NameTxt.setText(null);
+            GenderCombo.setSelectedItem("Male");
+            CivilStatusCombo.setSelectedItem("Single");
+            AdressTxt.setText(null);
+            DateOfBirthTxt.setText(null);
+            MobileNoTxt.setText(null);
+            PermenentNoTxt.setText(null);
+            NicTxt.setText(null);
+            EmailTxt.setText(null);
+            AssignDateTxt.setText(null);
+            DesignationTxt.setText(null);
+            SearchDesignationTxt.setText(null);
+            SearchEmployeeIdTxt.setText(null);
+            SearchNameTxt.setText(null);
+    }//GEN-LAST:event_ClearBtnActionPerformed
+
+    private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
+        
+        String searchName = SearchNameTxt.getText();
+        String employeeId = SearchEmployeeIdTxt.getText();
+        String designation = SearchDesignationTxt.getText();
+         try {
+        
+            
+            Employee employee = EmployeeController.getEmployee(searchName,employeeId,designation);
+            NameTxt.setText(employee.getEmployeeName());
+            GenderCombo.setSelectedItem(employee.getGender());
+            CivilStatusCombo.setSelectedItem(employee.getCivilStatus());
+            AdressTxt.setText(employee.getAddress());
+            DateOfBirthTxt.setText(employee.getDateOfBirth());
+            MobileNoTxt.setText(employee.getMobileNo());
+            PermenentNoTxt.setText(employee.getLandPhoneNo());
+            NicTxt.setText(employee.getNicNo());
+            EmailTxt.setText(employee.getEmail());
+            AssignDateTxt.setText(employee.getAssignDate());
+            DesignationTxt.setText(employee.getDesignation());
+          //  updateEmployeeInfoTable(employee.getEmployeeId());
+        
+       
+        } catch (ClassNotFoundException | SQLException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex);
+                Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_SearchBtnActionPerformed
+
+    private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
+        // TODO add your handling code here:
+        try{
+                File image = new File(fileName);
+                FileInputStream fis = new FileInputStream(image);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                for(int readNum;(readNum = fis.read(buf))!=-1;){
+                    bos.write(buf,0,readNum);
+                }
+                person_image = bos.toByteArray();
+            }catch(IOException e){
+                JOptionPane.showMessageDialog(null, e);
+            }   
+       
+   //new Employee("EM0001",NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
+        try {
+             Employee employee = EmployeeController.getEmployee(NameTxt.getText());
+            int res = EmployeeController.updateEmployee(employee);
+            if (res > 0) {
+                dispose();
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+             JOptionPane.showMessageDialog(rootPane, ex);
+        }
+    }//GEN-LAST:event_UpdateBtnActionPerformed
+
+    private void updateEmployeeInfoTable(){
+         try{
+             ResultSet resultSet = EmployeeController.ListgetInfoForTable();
+             EmployeeInfoTable.setModel(DbUtils.resultSetToTableModel(resultSet));
+         } catch (ClassNotFoundException | SQLException e){
+             JOptionPane.showMessageDialog(rootPane, e);
+         }
+     }
+    private void updateEmployeeInfoTable(String employeeID){
+         try{
+             ResultSet resultSet = EmployeeController.ListgetInfoForTable(employeeID);
+             EmployeeInfoTable.setModel(DbUtils.resultSetToTableModel(resultSet));
+         } catch (ClassNotFoundException | SQLException e){
+             JOptionPane.showMessageDialog(rootPane, e);
+         }
+     }
+     
+     private String createId(int row){
+         String tempId;
+        if (row/10 < 1){
+                tempId = "EM00"+row;
+            } 
+            else if (row < 1){
+                tempId = "EM0"+row;
+            }
+            else if (row < 1){
+                tempId = "EM"+row;
+            }else{
+                tempId = "EM"+row;
+            }  
+        return tempId;
+     }
 //    
     /**
      * @param args the command line arguments
@@ -689,10 +844,12 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JTextArea AdressTxt;
     private javax.swing.JTextField AssignDateTxt;
     private javax.swing.JComboBox<String> CivilStatusCombo;
+    private javax.swing.JButton ClearBtn;
     private javax.swing.JTextField DateOfBirthTxt;
     private javax.swing.JTextField DesignationTxt;
     private javax.swing.JTextField EmailTxt;
     private javax.swing.JButton EmployeeAddBtn;
+    private javax.swing.JTable EmployeeInfoTable;
     private javax.swing.JComboBox<String> GenderCombo;
     private javax.swing.JButton HomeBtn;
     private javax.swing.JButton LogOutBtn;
@@ -700,14 +857,13 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JTextField NameTxt;
     private javax.swing.JTextField NicTxt;
     private javax.swing.JTextField PermenentNoTxt;
+    private javax.swing.JButton SearchBtn;
+    private javax.swing.JTextField SearchDesignationTxt;
+    private javax.swing.JTextField SearchEmployeeIdTxt;
+    private javax.swing.JTextField SearchNameTxt;
+    private javax.swing.JButton UpdateBtn;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -732,10 +888,6 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel picLable;
     private javax.swing.JButton uploadBtn;
     // End of variables declaration//GEN-END:variables

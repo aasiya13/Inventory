@@ -13,10 +13,10 @@ import java.sql.SQLException;
  * @author Sithara
  */
 public class DbConnection {
-     private static DbConnection dbConnection;
+     public static DbConnection dbConnection;
     private final Connection con;
 
-    private DbConnection() throws ClassNotFoundException, SQLException {
+    public DbConnection() throws ClassNotFoundException, SQLException {
       // Class.forName("com.mysql.jdbc.Driver");
 
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Inventory", "root", "root");

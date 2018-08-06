@@ -11,6 +11,7 @@ package inventory.models;
  */
 public class Employee {
     private String employeeId;
+    private String employeeName;
     private String gender;
     private String civilStatus;
     private String address;
@@ -21,11 +22,12 @@ public class Employee {
     private String email;
     private String designation;
     private String assignDate;
-    private String img;
+    private byte[] img = null;
 
 
-    public Employee(String employeeId, String gender, String civilStatus, String address, String dateOfBirth, String nicNo, String landPhoneNo, String mobileNo, String email, String designation, String assignDate, String img) {
+    public Employee(String employeeId, String employeeName, String gender, String civilStatus, String address, String dateOfBirth, String nicNo, String landPhoneNo, String mobileNo, String email, String designation, String assignDate, byte[] img) {
         this.employeeId = employeeId;
+        this.employeeName = employeeName;
         this.gender = gender;
         this.civilStatus = civilStatus;
         this.address = address;
@@ -45,6 +47,14 @@ public class Employee {
 
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public String getGender() {
@@ -127,18 +137,12 @@ public class Employee {
         this.assignDate = assignDate;
     }
 
-    public String getImg() {
+    public byte[] getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public void setImg(byte[] img) {
         this.img = img;
     }
-
-    @Override
-    public String toString() {
-        return "Employee{" + "employeeId=" + employeeId + ", gender=" + gender + ", civilStatus=" + civilStatus + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", nicNo=" + nicNo + ", landPhoneNo=" + landPhoneNo + ", mobileNo=" + mobileNo + ", email=" + email + ", designation=" + designation + ", assignDate=" + assignDate + ", img=" + img + '}';
-    }
-    
     
 }

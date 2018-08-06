@@ -5,9 +5,11 @@
  */
 package inventory.ui;
 
+import inventory.db.DbConnection;
 import inventory.models.User;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -413,7 +415,9 @@ public class MainFrame extends javax.swing.JFrame {
             try {
               //  resultSet.close();
               //  pst.close();
-              //  connection.close();
+            //  DbConnection.dbConnection.close();
+        //    Connection connection = DbConnection.getInstance().getConnection();
+          //    connection.close();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, e);
             }

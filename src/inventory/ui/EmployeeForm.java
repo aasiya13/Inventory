@@ -96,11 +96,13 @@ public class EmployeeForm extends javax.swing.JFrame {
         picLable = new javax.swing.JLabel();
         uploadBtn = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        EmployeeIdLbl = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         EmployeeAddBtn = new javax.swing.JButton();
         UpdateBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        DeleteBtn = new javax.swing.JButton();
         ClearBtn = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -260,12 +262,22 @@ public class EmployeeForm extends javax.swing.JFrame {
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Clear");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Employee Id");
+
+        EmployeeIdLbl.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        EmployeeIdLbl.setText("EM001");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(135, 135, 135)
+                .addGap(53, 53, 53)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(EmployeeIdLbl))
+                .addGap(55, 55, 55)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -277,10 +289,17 @@ public class EmployeeForm extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(uploadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(uploadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(EmployeeIdLbl)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
 
@@ -306,10 +325,15 @@ public class EmployeeForm extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 102, 153));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Delete");
+        DeleteBtn.setBackground(new java.awt.Color(0, 102, 153));
+        DeleteBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        DeleteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        DeleteBtn.setText("Delete");
+        DeleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteBtnActionPerformed(evt);
+            }
+        });
 
         ClearBtn.setBackground(new java.awt.Color(0, 102, 153));
         ClearBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -400,7 +424,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(UpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(29, 29, 29))
@@ -412,7 +436,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(EmployeeAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -506,7 +530,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                             .addComponent(DesignationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel7)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -601,14 +625,14 @@ public class EmployeeForm extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e);
         } finally {
-            try {
-              //  resultSet.close();
-              //  pst.close();
-              Connection connection = DbConnection.getInstance().getConnection();
-              connection.close();
-            } catch (ClassNotFoundException | SQLException e) {
-                JOptionPane.showMessageDialog(rootPane, e);
-            }
+//            try {
+//              //  resultSet.close();
+//              //  pst.close();
+//              //Connection connection = DbConnection.getInstance().getConnection();
+//              //connection.close();
+//            } catch (ClassNotFoundException | SQLException e) {
+//                JOptionPane.showMessageDialog(rootPane, e);
+//            }
         }
     }//GEN-LAST:event_LogOutBtnActionPerformed
 
@@ -655,6 +679,7 @@ public class EmployeeForm extends javax.swing.JFrame {
             if (res > 0) {
                 dispose();
             }
+            updateEmployeeInfoTable();
         } catch (SQLException | ClassNotFoundException ex) {
              JOptionPane.showMessageDialog(rootPane, ex);
         }
@@ -679,6 +704,7 @@ public class EmployeeForm extends javax.swing.JFrame {
         String employeeId = EmployeeInfoTable.getModel().getValueAt(row, 0).toString();
         try {
             Employee employee = EmployeeController.getEmployee(employeeId);
+            EmployeeIdLbl.setText(employee.getEmployeeId());
             NameTxt.setText(employee.getEmployeeName());
             GenderCombo.setSelectedItem(employee.getGender());
             CivilStatusCombo.setSelectedItem(employee.getCivilStatus());
@@ -700,20 +726,7 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
         // TODO add your handling code here:
-            NameTxt.setText(null);
-            GenderCombo.setSelectedItem("Male");
-            CivilStatusCombo.setSelectedItem("Single");
-            AdressTxt.setText(null);
-            DateOfBirthTxt.setText(null);
-            MobileNoTxt.setText(null);
-            PermenentNoTxt.setText(null);
-            NicTxt.setText(null);
-            EmailTxt.setText(null);
-            AssignDateTxt.setText(null);
-            DesignationTxt.setText(null);
-            SearchDesignationTxt.setText(null);
-            SearchEmployeeIdTxt.setText(null);
-            SearchNameTxt.setText(null);
+            clearTextFields();
     }//GEN-LAST:event_ClearBtnActionPerformed
 
     private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
@@ -747,30 +760,35 @@ public class EmployeeForm extends javax.swing.JFrame {
 
     private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
         // TODO add your handling code here:
-        try{
-                File image = new File(fileName);
-                FileInputStream fis = new FileInputStream(image);
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                byte[] buf = new byte[1024];
-                for(int readNum;(readNum = fis.read(buf))!=-1;){
-                    bos.write(buf,0,readNum);
-                }
-                person_image = bos.toByteArray();
-            }catch(IOException e){
-                JOptionPane.showMessageDialog(null, e);
-            }   
-       
-   //new Employee("EM0001",NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
+       String getId = EmployeeIdLbl.getText();
+       Employee employee = new Employee(getId,NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
         try {
-             Employee employee = EmployeeController.getEmployee(NameTxt.getText());
+           //  Employee employee = EmployeeController.getEmployee(getId);
             int res = EmployeeController.updateEmployee(employee);
+             updateEmployeeInfoTable();
             if (res > 0) {
                 dispose();
             }
         } catch (SQLException | ClassNotFoundException ex) {
              JOptionPane.showMessageDialog(rootPane, ex);
         }
+       
     }//GEN-LAST:event_UpdateBtnActionPerformed
+
+    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
+        // TODO add your handling code here:
+        String getId = EmployeeIdLbl.getText();
+        int p = JOptionPane.showConfirmDialog(rootPane,"Do you really want to Delete? ","Delete",JOptionPane.YES_NO_OPTION);
+        if(p == 0){
+            try{
+                 EmployeeController.deleteEmployee(getId);
+                 updateEmployeeInfoTable();
+                 clearTextFields();
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        }
+    }//GEN-LAST:event_DeleteBtnActionPerformed
 
     private void updateEmployeeInfoTable(){
          try{
@@ -788,6 +806,23 @@ public class EmployeeForm extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(rootPane, e);
          }
      }
+    
+    private void clearTextFields(){
+        NameTxt.setText(null);
+            GenderCombo.setSelectedItem("Male");
+            CivilStatusCombo.setSelectedItem("Single");
+            AdressTxt.setText(null);
+            DateOfBirthTxt.setText(null);
+            MobileNoTxt.setText(null);
+            PermenentNoTxt.setText(null);
+            NicTxt.setText(null);
+            EmailTxt.setText(null);
+            AssignDateTxt.setText(null);
+            DesignationTxt.setText(null);
+            SearchDesignationTxt.setText(null);
+            SearchEmployeeIdTxt.setText(null);
+            SearchNameTxt.setText(null);
+    }
      
      private String createId(int row){
          String tempId;
@@ -846,9 +881,11 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> CivilStatusCombo;
     private javax.swing.JButton ClearBtn;
     private javax.swing.JTextField DateOfBirthTxt;
+    private javax.swing.JButton DeleteBtn;
     private javax.swing.JTextField DesignationTxt;
     private javax.swing.JTextField EmailTxt;
     private javax.swing.JButton EmployeeAddBtn;
+    private javax.swing.JLabel EmployeeIdLbl;
     private javax.swing.JTable EmployeeInfoTable;
     private javax.swing.JComboBox<String> GenderCombo;
     private javax.swing.JButton HomeBtn;
@@ -862,7 +899,6 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JTextField SearchEmployeeIdTxt;
     private javax.swing.JTextField SearchNameTxt;
     private javax.swing.JButton UpdateBtn;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -872,6 +908,7 @@ public class EmployeeForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

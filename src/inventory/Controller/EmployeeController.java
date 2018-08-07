@@ -100,7 +100,6 @@ public class EmployeeController {
     public static Employee getEmployee(String name, String employeeId, String des ) throws ClassNotFoundException, SQLException{
      
         String sql = "";
-        
         try{
             
             if(!name.equals("")&&!employeeId.equals("")&&!des.equals(""))
@@ -118,7 +117,6 @@ public class EmployeeController {
             else if(!des.equals(""))
                 sql = "select * from employee where designation = '"+des+"'";
            
-        
             ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
             if (rst.next()){
                 return new Employee(rst.getString(1), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6), rst.getString(7), rst.getString(8), rst.getString(9), rst.getString(10), rst.getString(11), rst.getString(12), rst.getString(13), rst.getBytes(14));
@@ -135,9 +133,9 @@ public class EmployeeController {
        connection.setAutoCommit(false);
         try {
           
-            String addQuery = "UPDATE employee SET name=?,gender=?,civilStatus=?,address=?,dateOfBirth=?,"
+            String updateQuery = "UPDATE employee SET name=?,gender=?,civilStatus=?,address=?,dateOfBirth=?,"
                     +"nic=?,mobileNo=?,landNo=?,email=?,designation=?,assignDate=?,img=? where employeeId =?";     
-            PreparedStatement pre_stm = connection.prepareStatement(addQuery);
+            PreparedStatement pre_stm = connection.prepareStatement(updateQuery);
          
             pre_stm.setString(1, employee.getEmployeeName());
             pre_stm.setString(2, employee.getGender());
@@ -164,10 +162,31 @@ public class EmployeeController {
             connection.rollback();
             throw e;
         } finally {
-            
             connection.setAutoCommit(true);
         }
   return 0;  }
     
+    public static void deleteEmployee(String employeeId) throws SQLException, ClassNotFoundException {
+        
+       Connection connection = DbConnection.getInstance().getConnection();
+       connection.setAutoCommit(false);
+       try{
+        String sql = "DELETE FROM employee WHERE employeeId=?";
+            PreparedStatement pre_stm = connection.prepareStatement(sql);
+            pre_stm.setString(1, employeeId);
+            
+            int res = pre_stm.executeUpdate();
+            if (res > 0) {
+                 JOptionPane.showMessageDialog(null,"Successfully Deleted");
+                 pre_stm.close();
+                }
+       }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
 }
 

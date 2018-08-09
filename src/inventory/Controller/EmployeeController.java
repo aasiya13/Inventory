@@ -76,7 +76,8 @@ public class EmployeeController {
             
             connection.setAutoCommit(true);
         }
-  return 0;  }
+    return 0;  
+    }
     
     public static ResultSet ListgetInfoForTable() throws SQLException, ClassNotFoundException{
         String sql = "select employeeId,name,designation,mobileno,email from employee";

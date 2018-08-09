@@ -6,11 +6,14 @@
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/MainFrame.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/models/Employee.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/UserController.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/CategoryController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/main/Main.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/EmployeeController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/LogInForm.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/EmployeeForm.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/db/DbConnection.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/CategoryFrame.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/models/Category.java</file>
         </group>
     </open-files>
 </project-private>

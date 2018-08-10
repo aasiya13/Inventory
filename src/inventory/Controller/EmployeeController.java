@@ -26,9 +26,9 @@ public class EmployeeController {
        connection.setAutoCommit(false);
         try {
             Statement s = connection.createStatement();
-            ResultSet r = s.executeQuery("SELECT COUNT(*) AS rowcount FROM employee");
+            ResultSet r = s.executeQuery("SELECT employeeId AS rowCount FROM employee ORDER BY employeeId DESC LIMIT 1");
             r.next();
-            int count = r.getInt("rowcount") ;
+            int count = r.getInt("rowCount") ;
             r.close() ;
             int generatedEmployeeId = count + 1;
             String tempId;
@@ -80,17 +80,17 @@ public class EmployeeController {
     }
     
     public static ResultSet ListgetInfoForTable() throws SQLException, ClassNotFoundException{
-        String sql = "select employeeId,name,designation,mobileno,email from employee";
+        String sql = "SELECT employeeId,name,designation,mobileno,email FROM employee";
         return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
     }
     
     public static ResultSet ListgetInfoForTable(String employeeID) throws SQLException, ClassNotFoundException{
-        String sql = "select employeeId,name,designation,mobileno,email from employee where employeeId = '"+employeeID+"'";
+        String sql = "SELECT employeeId,name,designation,mobileno,email FROM employee WHERE employeeId = '"+employeeID+"'";
         return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
     }
     
     public static Employee getEmployee(String id) throws ClassNotFoundException, SQLException{
-        String sql = "select * from employee where employeeId = '"+id+"'" ;
+        String sql = "SELECT * FROM employee WHERE employeeId = '"+id+"'" ;
          ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
          if (rst.next()){
          return new Employee(rst.getString(1), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6), rst.getString(7), rst.getString(8), rst.getString(9), rst.getString(10), rst.getString(11), rst.getString(12), rst.getString(13), rst.getBytes(14));

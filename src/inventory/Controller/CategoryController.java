@@ -9,10 +9,12 @@ import inventory.db.DbConnection;
 import inventory.models.Category;
 import inventory.models.Employee;
 import java.awt.HeadlessException;
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -77,6 +79,17 @@ public class CategoryController {
         } catch (HeadlessException | ClassNotFoundException | SQLException e) {
              JOptionPane.showMessageDialog(null,e);
         } return null;
+    }
+    
+    public static ArrayList<Category> getAllCategory() throws SQLException, ClassNotFoundException{
+        
+        String query = "SELECT * FROM category";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+       ArrayList<Category> categoryList = new ArrayList<>();
+        while (rst.next()){
+            categoryList.add(new Category(rst.getString(1),rst.getString(2)));
+        }
+        return categoryList;
     }
 
     public static int updateCategory(Category cate) throws ClassNotFoundException, SQLException {

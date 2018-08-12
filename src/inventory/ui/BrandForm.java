@@ -57,6 +57,7 @@ public class BrandForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         LogOutBtn = new javax.swing.JButton();
         HomeBtn = new javax.swing.JButton();
+        BackBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         BrandNameTxt = new javax.swing.JTextField();
@@ -90,6 +91,14 @@ public class BrandForm extends javax.swing.JFrame {
             }
         });
 
+        BackBtn.setBackground(new java.awt.Color(0, 102, 153));
+        BackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/back32.png"))); // NOI18N
+        BackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -97,9 +106,11 @@ public class BrandForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 398, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
                 .addComponent(HomeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LogOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -108,6 +119,7 @@ public class BrandForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BackBtn)
                     .addComponent(LogOutBtn)
                     .addComponent(HomeBtn)
                     .addComponent(jLabel1))
@@ -183,7 +195,7 @@ public class BrandForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(BrandNameTxt))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 150, Short.MAX_VALUE)
                         .addComponent(BrandNameAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(BrandNameDeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -323,6 +335,25 @@ public class BrandForm extends javax.swing.JFrame {
         BrandNameTxt.setText(null);
     }//GEN-LAST:event_BrandNameClearBtnActionPerformed
 
+    private void BackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            close();
+            new CategoryMenu().setVisible(true);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        } finally {
+            try {
+                //  resultSet.close();
+                //  pst.close();
+                //  connection.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        }
+    }//GEN-LAST:event_BackBtnActionPerformed
+
     private void updateBrandInfoTable() {
         try {
             ResultSet resultSet = BrandController.ListgetInfoForTable();
@@ -368,6 +399,7 @@ public class BrandForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackBtn;
     private javax.swing.JTable BrandInfoTable;
     private javax.swing.JButton BrandNameAddBtn;
     private javax.swing.JButton BrandNameClearBtn;

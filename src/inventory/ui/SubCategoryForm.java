@@ -5,8 +5,17 @@
  */
 package inventory.ui;
 
+import inventory.Controller.BrandController;
+import inventory.Controller.CategoryController;
+import inventory.models.Brand;
+import inventory.models.Category;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -19,15 +28,18 @@ public class SubCategoryForm extends javax.swing.JFrame {
     /**
      * Creates new form SubCategoryForm
      */
-    public SubCategoryForm() {
+    public SubCategoryForm() throws SQLException, ClassNotFoundException {
         initComponents();
         init();
+        getCategoriesToComboBox();
+        getBrandsToList(); 
     }
     
     public void init(){
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
+        
     }
     
     public void close() {
@@ -46,18 +58,19 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         LogOutBtn = new javax.swing.JButton();
-        HomeBtn = new javax.swing.JButton();
+        HomeBtn1 = new javax.swing.JButton();
+        BackBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CategoryComboBox = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        BrandList = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -67,7 +80,7 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        CategorySearchByComboBox = new javax.swing.JComboBox<>();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -92,11 +105,19 @@ public class SubCategoryForm extends javax.swing.JFrame {
             }
         });
 
-        HomeBtn.setBackground(new java.awt.Color(0, 102, 153));
-        HomeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/Home.png"))); // NOI18N
-        HomeBtn.addActionListener(new java.awt.event.ActionListener() {
+        HomeBtn1.setBackground(new java.awt.Color(0, 102, 153));
+        HomeBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/Home.png"))); // NOI18N
+        HomeBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HomeBtnActionPerformed(evt);
+                HomeBtn1ActionPerformed(evt);
+            }
+        });
+
+        BackBtn.setBackground(new java.awt.Color(0, 102, 153));
+        BackBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/back32.png"))); // NOI18N
+        BackBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackBtnActionPerformed(evt);
             }
         });
 
@@ -107,9 +128,11 @@ public class SubCategoryForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 590, Short.MAX_VALUE)
-                .addComponent(HomeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(HomeBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LogOutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -118,8 +141,9 @@ public class SubCategoryForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BackBtn)
+                    .addComponent(HomeBtn1)
                     .addComponent(LogOutBtn)
-                    .addComponent(HomeBtn)
                     .addComponent(jLabel1))
                 .addGap(0, 22, Short.MAX_VALUE))
         );
@@ -130,17 +154,17 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jLabel2.setText("Category");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Name");
+        jLabel3.setText("Sub Cate. Name");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Code");
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        CategoryComboBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextField2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -154,7 +178,7 @@ public class SubCategoryForm extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(60, 60, 60)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, 306, Short.MAX_VALUE)
+                    .addComponent(CategoryComboBox, 0, 306, Short.MAX_VALUE)
                     .addComponent(jTextField1)
                     .addComponent(jTextField2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -163,10 +187,10 @@ public class SubCategoryForm extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CategoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(41, 41, 41)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -174,17 +198,18 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        BrandList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        BrandList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(BrandList);
 
         jButton3.setBackground(new java.awt.Color(0, 51, 102));
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -264,11 +289,10 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Search By Category");
 
-        jComboBox2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        CategorySearchByComboBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        CategorySearchByComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                CategorySearchByComboBoxActionPerformed(evt);
             }
         });
 
@@ -303,7 +327,7 @@ public class SubCategoryForm extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox2, 0, 242, Short.MAX_VALUE)
+                    .addComponent(CategorySearchByComboBox, 0, 242, Short.MAX_VALUE)
                     .addComponent(jTextField3)
                     .addComponent(jTextField4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -320,7 +344,7 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CategorySearchByComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -354,7 +378,7 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -429,33 +453,54 @@ public class SubCategoryForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_LogOutBtnActionPerformed
 
-    private void HomeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBtnActionPerformed
+    private void CategorySearchByComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategorySearchByComboBoxActionPerformed
         // TODO add your handling code here:
-        try {
-            close();
-            new MainFrame().setVisible(true);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e);
-        } finally {
-            try {
-                //  resultSet.close();
-                //  pst.close();
-                //  connection.close();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(rootPane, e);
-            }
-        }
-    }//GEN-LAST:event_HomeBtnActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_CategorySearchByComboBoxActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void HomeBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBtn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HomeBtn1ActionPerformed
+
+    private void BackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            close();
+            new CategoryMenu().setVisible(true);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        } finally {
+            try {
+              //  resultSet.close();
+              //  pst.close();
+              //  connection.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        }
+    }//GEN-LAST:event_BackBtnActionPerformed
+    private void getCategoriesToComboBox() throws SQLException, ClassNotFoundException{
+        
+        ArrayList<Category> category = CategoryController.getAllCategory();
+        
+        for(Category cat : category){
+            CategoryComboBox.addItem(cat.getCategoryName());
+            CategorySearchByComboBox.addItem(cat.getCategoryName());
+        }
+    }
+    
+    private void getBrandsToList() throws ClassNotFoundException, SQLException{
+        ArrayList<Brand> brandList = BrandController.getAllBrands();
+        DefaultListModel dlm = new DefaultListModel();   
+        for(Brand brand : brandList){
+            dlm.addElement(brand.getBrandName());
+        }
+        BrandList.setModel(dlm);
+    }
     /**
      * @param args the command line arguments
      */
@@ -486,13 +531,23 @@ public class SubCategoryForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SubCategoryForm().setVisible(true);
+                try {
+                    new SubCategoryForm().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(SubCategoryForm.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(SubCategoryForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton HomeBtn;
+    private javax.swing.JButton BackBtn;
+    private javax.swing.JList<String> BrandList;
+    private javax.swing.JComboBox<String> CategoryComboBox;
+    private javax.swing.JComboBox<String> CategorySearchByComboBox;
+    private javax.swing.JButton HomeBtn1;
     private javax.swing.JButton LogOutBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -500,8 +555,6 @@ public class SubCategoryForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -509,7 +562,6 @@ public class SubCategoryForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -78,6 +79,17 @@ public class BrandController {
             return new Brand(rst.getString(1), rst.getString(2));
         }
         return null;
+    }
+
+    public static ArrayList<Brand> getAllBrands() throws ClassNotFoundException, SQLException {
+        String query = "SELECT * FROM brand";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        ArrayList<Brand> brandList = new ArrayList<>();
+        while (rst.next()) {
+            brandList.add(new Brand(rst.getString(1), rst.getString(2)));
+        }
+        return brandList;
+
     }
 
     public static ResultSet ListgetInfoForTable() throws SQLException, ClassNotFoundException {

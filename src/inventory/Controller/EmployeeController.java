@@ -28,7 +28,9 @@ public class EmployeeController {
             Statement s = connection.createStatement();
             ResultSet r = s.executeQuery("SELECT employeeId AS rowCount FROM employee ORDER BY employeeId DESC LIMIT 1");
             r.next();
-            int count = r.getInt("rowCount") ;
+            String countStr = r.getString("rowCount");
+            String str = countStr.replaceAll("\\D+","");
+            int count = Integer.parseInt(str);
             r.close() ;
             int generatedEmployeeId = count + 1;
             String tempId;

@@ -53,7 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         CategoryBtn = new javax.swing.JButton();
         PeopleBtn = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        AdminBtn = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -110,10 +110,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton8.setBackground(new java.awt.Color(0, 51, 102));
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/admin.png"))); // NOI18N
-        jButton8.setText("Admin");
+        AdminBtn.setBackground(new java.awt.Color(0, 51, 102));
+        AdminBtn.setForeground(new java.awt.Color(255, 255, 255));
+        AdminBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/inventory/ui/img/admin.png"))); // NOI18N
+        AdminBtn.setText("Admin");
+        AdminBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdminBtnActionPerformed(evt);
+            }
+        });
 
         jButton9.setBackground(new java.awt.Color(0, 51, 102));
         jButton9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -146,7 +151,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AdminBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PeopleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CategoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -166,7 +171,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PeopleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(AdminBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -467,6 +472,25 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_CategoryBtnActionPerformed
 
+    private void AdminBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            close();
+            new SupplierForm().setVisible(true);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        } finally {
+            try {
+              //  resultSet.close();
+              //  pst.close();
+              //  connection.close();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        }
+    }//GEN-LAST:event_AdminBtnActionPerformed
+
      public void close() {
         WindowEvent windowClosingEvnt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(windowClosingEvnt);
@@ -507,6 +531,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AdminBtn;
     private javax.swing.JButton CategoryBtn;
     private javax.swing.JButton LogoutBtn;
     private javax.swing.JButton PeopleBtn;
@@ -518,7 +543,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

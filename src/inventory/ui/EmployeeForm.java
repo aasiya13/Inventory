@@ -6,7 +6,6 @@
 package inventory.ui;
 
 import inventory.Controller.EmployeeController;
-import inventory.db.DbConnection;
 import inventory.models.Employee;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -30,7 +28,7 @@ import net.proteanit.sql.DbUtils;
  *
  * @author Sithara
  */
-public class EmployeeForm extends javax.swing.JFrame {
+public final class EmployeeForm extends javax.swing.JFrame {
 
     /**
      * Creates new form EmployeeForm
@@ -530,7 +528,7 @@ public class EmployeeForm extends javax.swing.JFrame {
                             .addComponent(DesignationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel7)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -653,24 +651,94 @@ public class EmployeeForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_HomeBtnActionPerformed
 
-    private void GenderComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenderComboActionPerformed
+    private void uploadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_GenderComboActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        File f = chooser.getSelectedFile();
+        this.fileName = f.getAbsolutePath();
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(fileName).getImage().getScaledInstance(picLable.getWidth(), picLable.getHeight(), Image.SCALE_SMOOTH));
+        picLable.setIcon(imageIcon);
+    }//GEN-LAST:event_uploadBtnActionPerformed
+
+    private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
+
+        String searchName = SearchNameTxt.getText();
+        String employeeId = SearchEmployeeIdTxt.getText();
+        String designation = SearchDesignationTxt.getText();
+        try {
+
+            Employee employee = EmployeeController.getEmployee(searchName,employeeId,designation);
+            NameTxt.setText(employee.getEmployeeName());
+            GenderCombo.setSelectedItem(employee.getGender());
+            CivilStatusCombo.setSelectedItem(employee.getCivilStatus());
+            AdressTxt.setText(employee.getAddress());
+            DateOfBirthTxt.setText(employee.getDateOfBirth());
+            MobileNoTxt.setText(employee.getMobileNo());
+            PermenentNoTxt.setText(employee.getLandPhoneNo());
+            NicTxt.setText(employee.getNicNo());
+            EmailTxt.setText(employee.getEmail());
+            AssignDateTxt.setText(employee.getAssignDate());
+            DesignationTxt.setText(employee.getDesignation());
+            //  updateEmployeeInfoTable(employee.getEmployeeId());
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex);
+            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_SearchBtnActionPerformed
+
+    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
+        // TODO add your handling code here:
+        clearTextFields();
+    }//GEN-LAST:event_ClearBtnActionPerformed
+
+    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
+        // TODO add your handling code here:
+        String getId = EmployeeIdLbl.getText();
+        int p = JOptionPane.showConfirmDialog(rootPane,"Do you really want to Delete? ","Delete",JOptionPane.YES_NO_OPTION);
+        if(p == 0){
+            try{
+                EmployeeController.deleteEmployee(getId);
+                updateEmployeeInfoTable();
+                clearTextFields();
+            }catch(ClassNotFoundException | SQLException e){
+                JOptionPane.showMessageDialog(rootPane, e);
+            }
+        }
+    }//GEN-LAST:event_DeleteBtnActionPerformed
+
+    private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
+        // TODO add your handling code here:
+        String getId = EmployeeIdLbl.getText();
+        Employee employee = new Employee(getId,NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
+        try {
+            //  Employee employee = EmployeeController.getEmployee(getId);
+            int res = EmployeeController.updateEmployee(employee);
+            updateEmployeeInfoTable();
+            if (res > 0) {
+                dispose();
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex);
+        }
+
+    }//GEN-LAST:event_UpdateBtnActionPerformed
 
     private void EmployeeAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmployeeAddBtnActionPerformed
-            // TODO add your handling code here:
-            try{
-                File image = new File(fileName);
-                FileInputStream fis = new FileInputStream(image);
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                byte[] buf = new byte[1024];
-                for(int readNum;(readNum = fis.read(buf))!=-1;){
-                    bos.write(buf,0,readNum);
-                }
-                person_image = bos.toByteArray();
-            }catch(IOException e){
-                JOptionPane.showMessageDialog(null, e);
-            }   
+        // TODO add your handling code here:
+        try{
+            File image = new File(fileName);
+            FileInputStream fis = new FileInputStream(image);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            for(int readNum;(readNum = fis.read(buf))!=-1;){
+                bos.write(buf,0,readNum);
+            }
+            person_image = bos.toByteArray();
+        }catch(IOException e){
+            JOptionPane.showMessageDialog(null, e);
+        }
         Employee employee = new Employee("EM0001",NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
         try {
             int res = EmployeeController.addEmployee(employee);
@@ -679,22 +747,12 @@ public class EmployeeForm extends javax.swing.JFrame {
             }
             updateEmployeeInfoTable();
         } catch (SQLException | ClassNotFoundException ex) {
-             JOptionPane.showMessageDialog(rootPane, ex);
+            JOptionPane.showMessageDialog(rootPane, ex);
         }
-//   System.out.println(employee);
-        
-//   System.out.println(employee);
-    }//GEN-LAST:event_EmployeeAddBtnActionPerformed
+        //   System.out.println(employee);
 
-    private void uploadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadBtnActionPerformed
-        // TODO add your handling code here:
-         JFileChooser chooser = new JFileChooser();
-        chooser.showOpenDialog(null);
-        File f = chooser.getSelectedFile();
-        this.fileName = f.getAbsolutePath();
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon(fileName).getImage().getScaledInstance(picLable.getWidth(), picLable.getHeight(), Image.SCALE_SMOOTH));
-        picLable.setIcon(imageIcon);
-    }//GEN-LAST:event_uploadBtnActionPerformed
+        //   System.out.println(employee);
+    }//GEN-LAST:event_EmployeeAddBtnActionPerformed
 
     private void EmployeeInfoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmployeeInfoTableMouseClicked
         // TODO add your handling code here:
@@ -714,79 +772,15 @@ public class EmployeeForm extends javax.swing.JFrame {
             EmailTxt.setText(employee.getEmail());
             AssignDateTxt.setText(employee.getAssignDate());
             DesignationTxt.setText(employee.getDesignation());
-  
-        } catch (SQLException ex) {
-            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_EmployeeInfoTableMouseClicked
 
-    private void ClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearBtnActionPerformed
+    private void GenderComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenderComboActionPerformed
         // TODO add your handling code here:
-            clearTextFields();
-    }//GEN-LAST:event_ClearBtnActionPerformed
-
-    private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
-        
-        String searchName = SearchNameTxt.getText();
-        String employeeId = SearchEmployeeIdTxt.getText();
-        String designation = SearchDesignationTxt.getText();
-         try {
-        
-            
-            Employee employee = EmployeeController.getEmployee(searchName,employeeId,designation);
-            NameTxt.setText(employee.getEmployeeName());
-            GenderCombo.setSelectedItem(employee.getGender());
-            CivilStatusCombo.setSelectedItem(employee.getCivilStatus());
-            AdressTxt.setText(employee.getAddress());
-            DateOfBirthTxt.setText(employee.getDateOfBirth());
-            MobileNoTxt.setText(employee.getMobileNo());
-            PermenentNoTxt.setText(employee.getLandPhoneNo());
-            NicTxt.setText(employee.getNicNo());
-            EmailTxt.setText(employee.getEmail());
-            AssignDateTxt.setText(employee.getAssignDate());
-            DesignationTxt.setText(employee.getDesignation());
-          //  updateEmployeeInfoTable(employee.getEmployeeId());
-        
-       
-        } catch (ClassNotFoundException | SQLException ex) {
-                JOptionPane.showMessageDialog(rootPane, ex);
-                Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-    }//GEN-LAST:event_SearchBtnActionPerformed
-
-    private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
-        // TODO add your handling code here:
-       String getId = EmployeeIdLbl.getText();
-       Employee employee = new Employee(getId,NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
-        try {
-           //  Employee employee = EmployeeController.getEmployee(getId);
-            int res = EmployeeController.updateEmployee(employee);
-             updateEmployeeInfoTable();
-            if (res > 0) {
-                dispose();
-            }
-        } catch (SQLException | ClassNotFoundException ex) {
-             JOptionPane.showMessageDialog(rootPane, ex);
-        }
-       
-    }//GEN-LAST:event_UpdateBtnActionPerformed
-
-    private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
-        // TODO add your handling code here:
-        String getId = EmployeeIdLbl.getText();
-        int p = JOptionPane.showConfirmDialog(rootPane,"Do you really want to Delete? ","Delete",JOptionPane.YES_NO_OPTION);
-        if(p == 0){
-            try{
-                 EmployeeController.deleteEmployee(getId);
-                 updateEmployeeInfoTable();
-                 clearTextFields();
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(rootPane, e);
-            }
-        }
-    }//GEN-LAST:event_DeleteBtnActionPerformed
+    }//GEN-LAST:event_GenderComboActionPerformed
 
     private void updateEmployeeInfoTable(){
          try{
@@ -867,6 +861,7 @@ public class EmployeeForm extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new EmployeeForm().setVisible(true);
             }

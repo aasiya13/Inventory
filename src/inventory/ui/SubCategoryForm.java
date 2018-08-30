@@ -7,17 +7,26 @@ package inventory.ui;
 
 import inventory.Controller.BrandController;
 import inventory.Controller.CategoryController;
+import inventory.Controller.SubCategoryController;
 import inventory.models.Brand;
 import inventory.models.Category;
+import inventory.models.SubCategory;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -32,20 +41,32 @@ public class SubCategoryForm extends javax.swing.JFrame {
         initComponents();
         init();
         getCategoriesToComboBox();
-        getBrandsToList(); 
+        getBrandsToList();
+        updateSubCategoryInfoTable();
+        tableStyle();
     }
-    
-    public void init(){
+
+    public void init() {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
-        
+
     }
-    
+
     public void close() {
         WindowEvent windowClosingEvnt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(windowClosingEvnt);
     }
+
+    public void tableStyle() {
+        JTableHeader tableheader = SubactegoyTable.getTableHeader();
+        Color headerBlue = new Color(0, 102, 153);
+        tableheader.setBackground(headerBlue);
+        tableheader.setForeground(Color.WHITE);
+        tableheader.setFont(new Font("Tahoma", Font.BOLD, 16));
+        ((DefaultTableCellRenderer) tableheader.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,16 +87,17 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         CategoryComboBox = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        SubCatTxt = new javax.swing.JTextField();
+        SubCatCodeTxt = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         BrandList = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        SubBrandList = new javax.swing.JList<>();
+        AddToListBtn = new javax.swing.JButton();
+        RemoveListBtn = new javax.swing.JButton();
+        ListAddBtn = new javax.swing.JButton();
+        ListClearBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -87,7 +109,7 @@ public class SubCategoryForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        SubactegoyTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,6 +172,8 @@ public class SubCategoryForm extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Category");
 
@@ -161,10 +185,10 @@ public class SubCategoryForm extends javax.swing.JFrame {
 
         CategoryComboBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        SubCatTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextField2.setEnabled(false);
+        SubCatCodeTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        SubCatCodeTxt.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -179,8 +203,8 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 .addGap(60, 60, 60)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(CategoryComboBox, 0, 306, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2))
+                    .addComponent(SubCatTxt)
+                    .addComponent(SubCatCodeTxt))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -193,15 +217,15 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SubCatTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SubCatCodeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
-        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         BrandList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         BrandList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -211,30 +235,49 @@ public class SubCategoryForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(BrandList);
 
-        jButton3.setBackground(new java.awt.Color(0, 51, 102));
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText(">>");
+        SubBrandList.setBackground(new java.awt.Color(102, 153, 0));
+        SubBrandList.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jScrollPane3.setViewportView(SubBrandList);
 
-        jButton4.setBackground(new java.awt.Color(0, 51, 102));
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("<<");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        AddToListBtn.setBackground(new java.awt.Color(0, 51, 102));
+        AddToListBtn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        AddToListBtn.setForeground(new java.awt.Color(255, 255, 255));
+        AddToListBtn.setText(">>");
+        AddToListBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                AddToListBtnActionPerformed(evt);
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(0, 51, 102));
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Add");
+        RemoveListBtn.setBackground(new java.awt.Color(0, 51, 102));
+        RemoveListBtn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        RemoveListBtn.setForeground(new java.awt.Color(255, 255, 255));
+        RemoveListBtn.setText("<<");
+        RemoveListBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoveListBtnActionPerformed(evt);
+            }
+        });
 
-        jButton6.setBackground(new java.awt.Color(0, 51, 102));
-        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Clear");
+        ListAddBtn.setBackground(new java.awt.Color(0, 51, 102));
+        ListAddBtn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ListAddBtn.setForeground(new java.awt.Color(255, 255, 255));
+        ListAddBtn.setText("Add");
+        ListAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListAddBtnActionPerformed(evt);
+            }
+        });
+
+        ListClearBtn.setBackground(new java.awt.Color(0, 51, 102));
+        ListClearBtn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ListClearBtn.setForeground(new java.awt.Color(255, 255, 255));
+        ListClearBtn.setText("Clear");
+        ListClearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListClearBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -245,14 +288,14 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
+                    .addComponent(RemoveListBtn)
+                    .addComponent(AddToListBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ListAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ListClearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -267,18 +310,18 @@ public class SubCategoryForm extends javax.swing.JFrame {
                                 .addComponent(jScrollPane3))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(111, 111, 111)
-                                .addComponent(jButton3)
+                                .addComponent(AddToListBtn)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton4))))
+                                .addComponent(RemoveListBtn))))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(61, 61, 61)
-                        .addComponent(jButton5)
+                        .addComponent(ListAddBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton6)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(ListClearBtn)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
-        jPanel5.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Search By Name");
@@ -360,7 +403,10 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        SubactegoyTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        SubactegoyTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -371,23 +417,30 @@ public class SubCategoryForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        SubactegoyTable.setShowHorizontalLines(false);
+        SubactegoyTable.setShowVerticalLines(false);
+        SubactegoyTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SubactegoyTableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(SubactegoyTable);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -443,13 +496,13 @@ public class SubCategoryForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, e);
         } finally {
             //            try {
-                //              //  resultSet.close();
-                //              //  pst.close();
-                //              //Connection connection = DbConnection.getInstance().getConnection();
-                //              //connection.close();
-                //            } catch (ClassNotFoundException | SQLException e) {
-                //                JOptionPane.showMessageDialog(rootPane, e);
-                //            }
+            //              //  resultSet.close();
+            //              //  pst.close();
+            //              //Connection connection = DbConnection.getInstance().getConnection();
+            //              //connection.close();
+            //            } catch (ClassNotFoundException | SQLException e) {
+            //                JOptionPane.showMessageDialog(rootPane, e);
+            //            }
         }
     }//GEN-LAST:event_LogOutBtnActionPerformed
 
@@ -457,9 +510,15 @@ public class SubCategoryForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_CategorySearchByComboBoxActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void RemoveListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveListBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        SubCategoryController.removeSubList(SubBrandList.getSelectedValue());
+        DefaultListModel dlm = new DefaultListModel();
+        for (String s : SubCategoryController.getSubList()) {
+            dlm.addElement(s);
+        }
+        SubBrandList.setModel(dlm);
+    }//GEN-LAST:event_RemoveListBtnActionPerformed
 
     private void HomeBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeBtn1ActionPerformed
         // TODO add your handling code here:
@@ -470,37 +529,100 @@ public class SubCategoryForm extends javax.swing.JFrame {
         try {
             close();
             new CategoryMenu().setVisible(true);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e);
         } finally {
             try {
-              //  resultSet.close();
-              //  pst.close();
-              //  connection.close();
+                //  resultSet.close();
+                //  pst.close();
+                //  connection.close();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, e);
             }
         }
     }//GEN-LAST:event_BackBtnActionPerformed
-    private void getCategoriesToComboBox() throws SQLException, ClassNotFoundException{
-        
+
+    private void AddToListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddToListBtnActionPerformed
+        // TODO add your handling code here:
+        SubCategoryController.addSubList(BrandList.getSelectedValue());
+        DefaultListModel dlm = new DefaultListModel();
+        for (String s : SubCategoryController.getSubList()) {
+            dlm.addElement(s);
+        }
+        SubBrandList.setModel(dlm);
+    }//GEN-LAST:event_AddToListBtnActionPerformed
+
+    private void ListClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListClearBtnActionPerformed
+        // TODO add your handling code here:
+        DefaultListModel dlm = new DefaultListModel();
+        dlm.addElement(null);
+        SubBrandList.setModel(dlm);
+        SubCategoryController.removeAll();
+    }//GEN-LAST:event_ListClearBtnActionPerformed
+
+    private void ListAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListAddBtnActionPerformed
+        // TODO add your handling code here:
+        SubCategory subCategory = new SubCategory("", (String) CategoryComboBox.getSelectedItem(), SubCatTxt.getText(), SubCategoryController.getSubList());
+        try {
+            int res = SubCategoryController.addSubCategory(subCategory);
+            if (res > 0) {
+                dispose();
+            }
+            updateSubCategoryInfoTable();
+        } catch (SQLException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex);
+        }
+    }//GEN-LAST:event_ListAddBtnActionPerformed
+
+    private void SubactegoyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SubactegoyTableMouseClicked
+        // TODO add your handling code here:
+        int row = SubactegoyTable.getSelectedRow();
+        String subcategoryId = SubactegoyTable.getModel().getValueAt(row, 1).toString();
+        try {
+            SubCategory subcategory = SubCategoryController.getSubCategory(subcategoryId);
+            SubCatCodeTxt.setText(subcategory.getSubcategoryId());
+            SubCatTxt.setText(subcategory.getSubcategoryName());
+            CategoryComboBox.setSelectedItem(null);
+            DefaultListModel dlm = new DefaultListModel();
+            for (String s : subcategory.getBrandList()) {
+                dlm.addElement(s);
+            }
+            SubBrandList.setModel(dlm);
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_SubactegoyTableMouseClicked
+
+    private void getCategoriesToComboBox() throws SQLException, ClassNotFoundException {
+
         ArrayList<Category> category = CategoryController.getAllCategory();
-        
-        for(Category cat : category){
+
+        for (Category cat : category) {
             CategoryComboBox.addItem(cat.getCategoryName());
             CategorySearchByComboBox.addItem(cat.getCategoryName());
         }
     }
-    
-    private void getBrandsToList() throws ClassNotFoundException, SQLException{
+
+    private void getBrandsToList() throws ClassNotFoundException, SQLException {
         ArrayList<Brand> brandList = BrandController.getAllBrands();
-        DefaultListModel dlm = new DefaultListModel();   
-        for(Brand brand : brandList){
+        DefaultListModel dlm = new DefaultListModel();
+        for (Brand brand : brandList) {
             dlm.addElement(brand.getBrandName());
         }
         BrandList.setModel(dlm);
     }
+
+    private void updateSubCategoryInfoTable() {
+        try {
+            ResultSet resultSet = SubCategoryController.ListgetInfoForTable();
+            SubactegoyTable.setModel(DbUtils.resultSetToTableModel(resultSet));
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -543,18 +665,22 @@ public class SubCategoryForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddToListBtn;
     private javax.swing.JButton BackBtn;
     private javax.swing.JList<String> BrandList;
     private javax.swing.JComboBox<String> CategoryComboBox;
     private javax.swing.JComboBox<String> CategorySearchByComboBox;
     private javax.swing.JButton HomeBtn1;
+    private javax.swing.JButton ListAddBtn;
+    private javax.swing.JButton ListClearBtn;
     private javax.swing.JButton LogOutBtn;
+    private javax.swing.JButton RemoveListBtn;
+    private javax.swing.JList<String> SubBrandList;
+    private javax.swing.JTextField SubCatCodeTxt;
+    private javax.swing.JTextField SubCatTxt;
+    private javax.swing.JTable SubactegoyTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -571,9 +697,6 @@ public class SubCategoryForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables

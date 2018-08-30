@@ -37,7 +37,7 @@ public class LogInForm extends javax.swing.JFrame {
     
     public void init(){
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
     }
  
@@ -172,7 +172,7 @@ public class LogInForm extends javax.swing.JFrame {
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
         // TODO add your handling code here:
         try {  
-            User user = new User("U001",UserNametxt.getText(), Passwordtxt.getText());
+            User user = new User("U001",UserNametxt.getText(), Passwordtxt.getText(),"");
          
             if(UserController.authUser(user)) {
                 dispose();

@@ -18,7 +18,6 @@ public class DbConnection {
 
     public DbConnection() throws ClassNotFoundException, SQLException {
       // Class.forName("com.mysql.jdbc.Driver");
-
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Inventory", "root", "root");
     }
 

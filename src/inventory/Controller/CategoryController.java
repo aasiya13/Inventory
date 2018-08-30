@@ -64,11 +64,11 @@ public class CategoryController {
         String sql = "";
         try {
             if (!searchName.equals("") && !categoryId.equals("")) {
-                sql = "select * from category where name ='" + searchName + "'" + "and categoryId ='" + categoryId + "'";
+                sql = "select * from category where categoryName ='" + searchName + "'" + "and categoryId ='" + categoryId + "'";
             } else if (!categoryId.equals("")&& searchName.equals("")) {
                 sql = "select * from category where categoryId ='" + categoryId + "'";
             } else if (!searchName.equals("")&& categoryId.equals("")) {
-                sql = "select * from category where name ='" + searchName + "'";
+                sql = "select * from category where categoryName ='" + searchName + "'";
             }
             ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
             if (rst.next()) {
@@ -96,7 +96,7 @@ public class CategoryController {
         Connection connection = DbConnection.getInstance().getConnection();
         connection.setAutoCommit(false);
         try {
-            String updateQuery = "UPDATE category SET name=? where categoryId = ?";
+            String updateQuery = "UPDATE category SET categoryName=? where categoryId = ?";
             PreparedStatement pre_stm = connection.prepareStatement(updateQuery);
 
             //  pre_stm.setString(1, cate.getCategoryCode());

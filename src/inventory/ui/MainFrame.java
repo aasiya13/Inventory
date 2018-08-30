@@ -37,7 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
     
      public void init(){
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
     }
     /**
@@ -492,8 +492,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_AdminBtnActionPerformed
 
      public void close() {
-        WindowEvent windowClosingEvnt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(windowClosingEvnt);
+//        WindowEvent windowClosingEvnt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(windowClosingEvnt);
+            this.dispose();
     }
     /**
      * @param args the command line arguments

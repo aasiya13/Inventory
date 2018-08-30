@@ -7,6 +7,8 @@ package inventory.ui;
 
 import inventory.Controller.EmployeeController;
 import inventory.models.Employee;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -21,7 +23,10 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -32,28 +37,30 @@ public final class EmployeeForm extends javax.swing.JFrame {
 
     /**
      * Creates new form EmployeeForm
-     * 
-     * 
+     *
+     *
      */
     private String fileName;
-    private byte[] person_image; 
-    
+    private byte[] person_image;
+
     public EmployeeForm() {
         initComponents();
         init();
         updateEmployeeInfoTable();
+        tableStyle();
     }
-    
-    public void init(){
+
+    public void init() {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
     }
+
     public void close() {
         WindowEvent windowClosingEvnt = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(windowClosingEvnt);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -617,7 +624,7 @@ public final class EmployeeForm extends javax.swing.JFrame {
         try {
             close();
             new LogInForm().setVisible(true);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e);
         } finally {
@@ -637,14 +644,14 @@ public final class EmployeeForm extends javax.swing.JFrame {
         try {
             close();
             new MainFrame().setVisible(true);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e);
         } finally {
             try {
-              //  resultSet.close();
-              //  pst.close();
-              //  connection.close();
+                //  resultSet.close();
+                //  pst.close();
+                //  connection.close();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(rootPane, e);
             }
@@ -668,7 +675,7 @@ public final class EmployeeForm extends javax.swing.JFrame {
         String designation = SearchDesignationTxt.getText();
         try {
 
-            Employee employee = EmployeeController.getEmployee(searchName,employeeId,designation);
+            Employee employee = EmployeeController.getEmployee(searchName, employeeId, designation);
             NameTxt.setText(employee.getEmployeeName());
             GenderCombo.setSelectedItem(employee.getGender());
             CivilStatusCombo.setSelectedItem(employee.getCivilStatus());
@@ -696,13 +703,13 @@ public final class EmployeeForm extends javax.swing.JFrame {
     private void DeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteBtnActionPerformed
         // TODO add your handling code here:
         String getId = EmployeeIdLbl.getText();
-        int p = JOptionPane.showConfirmDialog(rootPane,"Do you really want to Delete? ","Delete",JOptionPane.YES_NO_OPTION);
-        if(p == 0){
-            try{
+        int p = JOptionPane.showConfirmDialog(rootPane, "Do you really want to Delete? ", "Delete", JOptionPane.YES_NO_OPTION);
+        if (p == 0) {
+            try {
                 EmployeeController.deleteEmployee(getId);
                 updateEmployeeInfoTable();
                 clearTextFields();
-            }catch(ClassNotFoundException | SQLException e){
+            } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(rootPane, e);
             }
         }
@@ -711,7 +718,7 @@ public final class EmployeeForm extends javax.swing.JFrame {
     private void UpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBtnActionPerformed
         // TODO add your handling code here:
         String getId = EmployeeIdLbl.getText();
-        Employee employee = new Employee(getId,NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
+        Employee employee = new Employee(getId, NameTxt.getText(), (String) GenderCombo.getSelectedItem(), (String) CivilStatusCombo.getSelectedItem(), AdressTxt.getText(), DateOfBirthTxt.getText(), NicTxt.getText(), PermenentNoTxt.getText(), MobileNoTxt.getText(), EmailTxt.getText(), DesignationTxt.getText(), AssignDateTxt.getText(), person_image);
         try {
             //  Employee employee = EmployeeController.getEmployee(getId);
             int res = EmployeeController.updateEmployee(employee);
@@ -727,19 +734,19 @@ public final class EmployeeForm extends javax.swing.JFrame {
 
     private void EmployeeAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmployeeAddBtnActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             File image = new File(fileName);
             FileInputStream fis = new FileInputStream(image);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
-            for(int readNum;(readNum = fis.read(buf))!=-1;){
-                bos.write(buf,0,readNum);
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
             }
             person_image = bos.toByteArray();
-        }catch(IOException e){
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        Employee employee = new Employee("EM0001",NameTxt.getText(),(String)GenderCombo.getSelectedItem(),(String)CivilStatusCombo.getSelectedItem(),AdressTxt.getText(),DateOfBirthTxt.getText(),NicTxt.getText(),PermenentNoTxt.getText(),MobileNoTxt.getText(),EmailTxt.getText(),DesignationTxt.getText(),AssignDateTxt.getText(),person_image);
+        Employee employee = new Employee("EM0001", NameTxt.getText(), (String) GenderCombo.getSelectedItem(), (String) CivilStatusCombo.getSelectedItem(), AdressTxt.getText(), DateOfBirthTxt.getText(), NicTxt.getText(), PermenentNoTxt.getText(), MobileNoTxt.getText(), EmailTxt.getText(), DesignationTxt.getText(), AssignDateTxt.getText(), person_image);
         try {
             int res = EmployeeController.addEmployee(employee);
             if (res > 0) {
@@ -760,6 +767,7 @@ public final class EmployeeForm extends javax.swing.JFrame {
         String employeeId = EmployeeInfoTable.getModel().getValueAt(row, 0).toString();
         try {
             Employee employee = EmployeeController.getEmployee(employeeId);
+
             EmployeeIdLbl.setText(employee.getEmployeeId());
             NameTxt.setText(employee.getEmployeeName());
             GenderCombo.setSelectedItem(employee.getGender());
@@ -782,56 +790,65 @@ public final class EmployeeForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_GenderComboActionPerformed
 
-    private void updateEmployeeInfoTable(){
-         try{
-             ResultSet resultSet = EmployeeController.ListgetInfoForTable();
-             EmployeeInfoTable.setModel(DbUtils.resultSetToTableModel(resultSet));
-         } catch (ClassNotFoundException | SQLException e){
-             JOptionPane.showMessageDialog(rootPane, e);
-         }
-     }
-    private void updateEmployeeInfoTable(String employeeID){
-         try{
-             ResultSet resultSet = EmployeeController.ListgetInfoForTable(employeeID);
-             EmployeeInfoTable.setModel(DbUtils.resultSetToTableModel(resultSet));
-         } catch (ClassNotFoundException | SQLException e){
-             JOptionPane.showMessageDialog(rootPane, e);
-         }
-     }
-    
-    private void clearTextFields(){
-        NameTxt.setText(null);
-            GenderCombo.setSelectedItem("Male");
-            CivilStatusCombo.setSelectedItem("Single");
-            AdressTxt.setText(null);
-            DateOfBirthTxt.setText(null);
-            MobileNoTxt.setText(null);
-            PermenentNoTxt.setText(null);
-            NicTxt.setText(null);
-            EmailTxt.setText(null);
-            AssignDateTxt.setText(null);
-            DesignationTxt.setText(null);
-            SearchDesignationTxt.setText(null);
-            SearchEmployeeIdTxt.setText(null);
-            SearchNameTxt.setText(null);
+    private void updateEmployeeInfoTable() {
+        try {
+            ResultSet resultSet = EmployeeController.ListgetInfoForTable();
+            EmployeeInfoTable.setModel(DbUtils.resultSetToTableModel(resultSet));
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
     }
-     
-     private String createId(int row){
-         String tempId;
-        if (row/10 < 1){
-                tempId = "EM00"+row;
-            } 
-            else if (row < 1){
-                tempId = "EM0"+row;
-            }
-            else if (row < 1){
-                tempId = "EM"+row;
-            }else{
-                tempId = "EM"+row;
-            }  
+
+    private void updateEmployeeInfoTable(String employeeID) {
+        try {
+            ResultSet resultSet = EmployeeController.ListgetInfoForTable(employeeID);
+            EmployeeInfoTable.setModel(DbUtils.resultSetToTableModel(resultSet));
+        } catch (ClassNotFoundException | SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+    }
+
+    private void clearTextFields() {
+        NameTxt.setText(null);
+        GenderCombo.setSelectedItem("Male");
+        CivilStatusCombo.setSelectedItem("Single");
+        AdressTxt.setText(null);
+        DateOfBirthTxt.setText(null);
+        MobileNoTxt.setText(null);
+        PermenentNoTxt.setText(null);
+        NicTxt.setText(null);
+        EmailTxt.setText(null);
+        AssignDateTxt.setText(null);
+        DesignationTxt.setText(null);
+        SearchDesignationTxt.setText(null);
+        SearchEmployeeIdTxt.setText(null);
+        SearchNameTxt.setText(null);
+    }
+
+    private String createId(int row) {
+        String tempId;
+        if (row / 10 < 1) {
+            tempId = "EM00" + row;
+        } else if (row < 1) {
+            tempId = "EM0" + row;
+        } else if (row < 1) {
+            tempId = "EM" + row;
+        } else {
+            tempId = "EM" + row;
+        }
         return tempId;
-     }
+    }
+
+    public void tableStyle() {
+        JTableHeader tableheader = EmployeeInfoTable.getTableHeader();
+        Color headerBlue = new Color(0, 102, 153);
+        tableheader.setBackground(headerBlue);
+        tableheader.setForeground(Color.WHITE);
+        tableheader.setFont(new Font("Tahoma", Font.BOLD, 16));
+        ((DefaultTableCellRenderer) tableheader.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+    }
 //    
+
     /**
      * @param args the command line arguments
      */

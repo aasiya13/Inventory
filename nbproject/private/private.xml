@@ -4,12 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/BrandController.java</file>
-            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/models/Employee.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/SupplierForm.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/UserController.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/CategoryController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/main/Main.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/EmployeeController.java</file>
-            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/LogInForm.java</file>
-            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/EmployeeForm.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/db/DbConnection.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/SupplierController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/SubCategoryForm.java</file>
         </group>
     </open-files>

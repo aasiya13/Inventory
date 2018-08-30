@@ -7,6 +7,8 @@ package inventory.ui;
 
 import inventory.Controller.BrandController;
 import inventory.models.Brand;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -15,7 +17,10 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -31,12 +36,21 @@ public class BrandForm extends javax.swing.JFrame {
         initComponents();
         init();
         updateBrandInfoTable();
+        tableStyle();
     }
 
     public void init() {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
+    }
+    public void tableStyle(){
+        JTableHeader tableheader = BrandInfoTable.getTableHeader();
+        Color headerBlue = new Color(0,102,153);
+        tableheader.setBackground(headerBlue);
+        tableheader.setForeground(Color.WHITE);
+        tableheader.setFont(new Font("Tahoma",Font.BOLD,16));
+        ((DefaultTableCellRenderer)tableheader.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
     }
 
     public void close() {

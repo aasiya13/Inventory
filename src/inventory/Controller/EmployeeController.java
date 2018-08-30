@@ -131,6 +131,7 @@ public class EmployeeController {
         }
        return null;
     }
+    
     public static int updateEmployee(Employee employee) throws SQLException, ClassNotFoundException {
        Connection connection = DbConnection.getInstance().getConnection();
        connection.setAutoCommit(false);

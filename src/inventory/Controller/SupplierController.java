@@ -6,7 +6,6 @@
 package inventory.Controller;
 
 import inventory.db.DbConnection;
-import inventory.models.Employee;
 import inventory.models.Supplier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

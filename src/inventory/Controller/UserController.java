@@ -40,6 +40,17 @@ public class UserController {
         }
         return employeeList;
     }
+    
+    public static ArrayList<String> getAllDesignations() throws SQLException, ClassNotFoundException {
+
+        String query = "SELECT designation FROM employee";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        ArrayList<String> employeeList = new ArrayList<>();
+        while (rst.next()) {
+            employeeList.add(rst.getString(1));
+        }
+        return employeeList;
+    }
 
     public static int addUser(User user) throws ClassNotFoundException, SQLException {
 
@@ -117,6 +128,16 @@ public class UserController {
             String name =  rst.getString(1);
             rst.close();
             return name;
+        }
+        return null;
+    }
+     public static String getEmployeeDesignation(String id) throws ClassNotFoundException, SQLException{
+        String sql = "SELECT designation FROM employee WHERE employeeId = '" + id + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+        if (rst.next()) {
+            String des =  rst.getString(1);
+            rst.close();
+            return des;
         }
         return null;
     }

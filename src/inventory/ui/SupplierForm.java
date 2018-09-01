@@ -24,6 +24,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -45,6 +46,7 @@ public class SupplierForm extends javax.swing.JFrame {
         tableStyle(SupplierInfoTable);
         tableStyle(userInfoTable);
         getEmployeesToComboBox();
+        getDesginationToComboBox();
         updateuserInfoTable();
     }
 
@@ -121,13 +123,13 @@ public class SupplierForm extends javax.swing.JFrame {
         UserNameTxt = new javax.swing.JTextField();
         Password = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        EmployeeNameCombo = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         UserStatusCombo = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         PasswordTxt = new javax.swing.JPasswordField();
         ConfirmPasswordTxt = new javax.swing.JPasswordField();
+        statusCombo = new javax.swing.JComboBox<>();
         UserId = new javax.swing.JLabel();
         UserIdlbl = new javax.swing.JLabel();
 
@@ -182,6 +184,16 @@ public class SupplierForm extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(0, 102, 153));
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
 
         SearchTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         SearchTxt.addActionListener(new java.awt.event.ActionListener() {
@@ -397,7 +409,7 @@ public class SupplierForm extends javax.swing.JFrame {
                                 .addComponent(SupSearchBtn)
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SupDeleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SupUpdateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -479,9 +491,6 @@ public class SupplierForm extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Employee Name");
 
-        EmployeeNameCombo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        EmployeeNameCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Manager", "Cashier" }));
-
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("User Name");
 
@@ -497,6 +506,8 @@ public class SupplierForm extends javax.swing.JFrame {
 
         ConfirmPasswordTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
+        statusCombo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -511,11 +522,11 @@ public class SupplierForm extends javax.swing.JFrame {
                     .addComponent(jLabel14))
                 .addGap(138, 138, 138)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(UserStatusCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(EmployeeNameCombo, 0, 202, Short.MAX_VALUE)
+                    .addComponent(UserStatusCombo, 0, 202, Short.MAX_VALUE)
                     .addComponent(UserNameTxt)
                     .addComponent(PasswordTxt)
-                    .addComponent(ConfirmPasswordTxt))
+                    .addComponent(ConfirmPasswordTxt)
+                    .addComponent(statusCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -538,10 +549,10 @@ public class SupplierForm extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(ConfirmPasswordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel14)
-                    .addComponent(EmployeeNameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54))
+                    .addComponent(statusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56))
         );
 
         UserId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -817,10 +828,12 @@ public class SupplierForm extends javax.swing.JFrame {
         try {
             User user = UserController.getUser(userName);
             String employeeName = UserController.getEmployee(user.getEmployeeName());
+            String employeeDesignation = UserController.getEmployeeDesignation(user.getEmployeeName());
             UserStatusCombo.setSelectedItem(employeeName);
             UserNameTxt.setText(user.getUserName());
             PasswordTxt.setText(user.getPassword());
             UserIdlbl.setText(user.getUserId());
+            statusCombo.setSelectedItem(employeeDesignation);
 
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -847,6 +860,20 @@ public class SupplierForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Passowrd Confirmation failed");
         }
     }//GEN-LAST:event_UpdateBtnActionPerformed
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+     //   jLabel1.setText("User Management");
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        // TODO add your handling code here:
+        JTabbedPane tabbedPane = (JTabbedPane)evt.getSource();
+        int selectedIndex = tabbedPane.getSelectedIndex();
+        if (selectedIndex == 0) jLabel1.setText("Supplier Management");
+        else jLabel1.setText("User Management");
+     //   JOptionPane.showMessageDialog(null, "Selected Index: " + selectedIndex);
+    }//GEN-LAST:event_jTabbedPane1StateChanged
     
     private void updateuserInfoTable(){
         try {
@@ -879,7 +906,7 @@ public class SupplierForm extends javax.swing.JFrame {
         PasswordTxt.setText(null);
         ConfirmPasswordTxt.setText(null);
         UserStatusCombo.setSelectedIndex(0);
-        EmployeeNameCombo.setSelectedIndex(0);
+        statusCombo.setSelectedIndex(0);
     }
     
     private void getEmployeesToComboBox() throws SQLException, ClassNotFoundException {
@@ -887,6 +914,14 @@ public class SupplierForm extends javax.swing.JFrame {
         ArrayList<String> employees = UserController.getAllEmployee();
         for (String emp : employees) {
             UserStatusCombo.addItem(emp);
+        }
+    }
+    
+    private void getDesginationToComboBox() throws SQLException, ClassNotFoundException {
+
+        ArrayList<String> designations = UserController.getAllDesignations();
+        for (String emp : designations) {
+            statusCombo.addItem(emp);
         }
     }
     
@@ -943,7 +978,6 @@ public class SupplierForm extends javax.swing.JFrame {
     private javax.swing.JButton ClearBtn;
     private javax.swing.JPasswordField ConfirmPasswordTxt;
     private javax.swing.JButton DeleteBtn;
-    private javax.swing.JComboBox<String> EmployeeNameCombo;
     private javax.swing.JButton HomeBtn;
     private javax.swing.JButton LogOutBtn;
     private javax.swing.JLabel Password;
@@ -990,6 +1024,7 @@ public class SupplierForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JComboBox<String> statusCombo;
     private javax.swing.JTable userInfoTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -416,7 +416,7 @@
                   </Group>
                   <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jButton3" alignment="1" min="-2" pref="212" max="-2" attributes="0"/>
+                      <Component id="ItemBtn" alignment="1" min="-2" pref="212" max="-2" attributes="0"/>
                       <Component id="jButton4" alignment="1" min="-2" pref="212" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
@@ -435,7 +435,7 @@
                   <EmptySpace pref="64" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButton2" alignment="3" min="-2" pref="130" max="-2" attributes="0"/>
-                      <Component id="jButton3" alignment="3" min="-2" pref="130" max="-2" attributes="0"/>
+                      <Component id="ItemBtn" alignment="3" min="-2" pref="130" max="-2" attributes="0"/>
                       <Component id="jButton11" alignment="3" min="-2" pref="130" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -478,7 +478,7 @@
             <Property name="text" type="java.lang.String" value="Reports"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="ItemBtn">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="66" red="0" type="rgb"/>
@@ -494,6 +494,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Item"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ItemBtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton4">
           <Properties>

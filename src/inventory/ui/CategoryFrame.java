@@ -151,7 +151,6 @@ public class CategoryFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -267,7 +266,6 @@ public class CategoryFrame extends javax.swing.JFrame {
                 .addContainerGap(72, Short.MAX_VALUE))
         );
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -353,7 +351,7 @@ public class CategoryFrame extends javax.swing.JFrame {
             }
         ));
         CategoryInfoTable.setGridColor(new java.awt.Color(0, 51, 102));
-        CategoryInfoTable.setShowVerticalLines(false);
+        CategoryInfoTable.setShowHorizontalLines(false);
         CategoryInfoTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 CategoryInfoTableMouseClicked(evt);

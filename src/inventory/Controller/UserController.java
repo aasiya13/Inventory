@@ -101,5 +101,75 @@ public class UserController {
         }
         return 0;
     }
+    public static User getUser(String userName) throws ClassNotFoundException, SQLException{
+        String sql = "SELECT * FROM user WHERE userName = '" + userName + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+        if (rst.next()) {
+            return new User(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4));
+        }
+        return null;
+    }
+    
+    public static String getEmployee(String id) throws ClassNotFoundException, SQLException{
+        String sql = "SELECT name FROM employee WHERE employeeId = '" + id + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+        if (rst.next()) {
+            String name =  rst.getString(1);
+            rst.close();
+            return name;
+        }
+        return null;
+    }
+    public static ResultSet ListgetInfoForTable() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT user.userName,employee.name FROM user INNER JOIN employee ON user.employeeId = employee.employeeId";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
+    
+    public static void deleteUser(String userId) throws ClassNotFoundException, SQLException {
+        Connection connection = DbConnection.getInstance().getConnection();
+        connection.setAutoCommit(false);
+        try {
+            String sql = "DELETE FROM user WHERE userId=?";
+            PreparedStatement pre_stm = connection.prepareStatement(sql);
+            pre_stm.setString(1, userId);
 
+            int res = pre_stm.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "Successfully Deleted");
+                pre_stm.close();
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
+    public static int updateUser(User user) throws SQLException, ClassNotFoundException {
+        Connection connection = DbConnection.getInstance().getConnection();
+        connection.setAutoCommit(false);
+        try {
+
+            String updateQuery = "UPDATE user SET userName=?,password=? where userId =?";
+            PreparedStatement pre_stm = connection.prepareStatement(updateQuery);
+
+            pre_stm.setString(1, user.getUserName());
+            pre_stm.setString(2, user.getPassword());
+            pre_stm.setString(3, user.getUserId());
+            int res = pre_stm.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "Successfully Updated");
+                pre_stm.close();
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+        return 0;
+    }
 }

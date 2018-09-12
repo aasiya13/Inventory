@@ -4,12 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/BrandController.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/ItemFrame.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/SupplierForm.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/UserController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/CategoryController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/main/Main.java</file>
-            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/EmployeeController.java</file>
-            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/ui/EmployeeForm.java</file>
+            <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/ItemController.java</file>
             <file>file:/D:/Mine/Java/Inventory/Inventory/src/inventory/Controller/SupplierController.java</file>
         </group>
     </open-files>

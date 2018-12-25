@@ -146,6 +146,14 @@ public class ItemController {
         }
         return itemId;
     }
+    
+     public static ResultSet getItemById(String id) throws SQLException, ClassNotFoundException {
+         
+         String itemId = "IT" + id;
+          String query1 = "SELECT itemName,itemId,amount,sellingPrice FROM item WHERE itemId = '" + itemId + "'";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(query1);
+
+    }
 
     public static String getSubCategoryId(String name) throws SQLException, ClassNotFoundException {
 
@@ -170,7 +178,28 @@ public class ItemController {
         // rst.close();
         return supName;
     }
-
+    
+    public static String getUnitSize(String itemId) throws ClassNotFoundException, SQLException{
+        String query = "SELECT unit_size  FROM item where itemId = '" + itemId + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String unitSize = "";
+        if (rst.next()) {
+            unitSize = rst.getString(1);
+        }
+        // rst.close();
+        return unitSize;
+    }
+    
+    public static String getPurchasePrice(String itemId) throws ClassNotFoundException, SQLException{
+        String query = "SELECT purchasePrice  FROM item where itemId = '" + itemId + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String purchasePrice = "";
+        if (rst.next()) {
+            purchasePrice = rst.getString(1);
+        }
+        // rst.close();
+        return purchasePrice;
+    }
     public static Item getForSearch(String itemName, String subCatName) throws SQLException, ClassNotFoundException {
         String subCatId = getSubCategoryId(subCatName);
         String query = "SELECT * FROM item where subcategoryId = '" + subCatId + "' OR itemName = '" + itemName + "'";
@@ -181,7 +210,48 @@ public class ItemController {
         }
         return item;
     }
+    
+    public static ResultSet getInfoForItemTable() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT itemName,itemId,amount FROM item";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
 
+     public static ResultSet getInfoForInfoTable() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT itemName,itemId,amount,purchasePrice,sellingPrice,status FROM item";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
+    
+    public static ResultSet getInfoForInfoTableOFItem(String itemId) throws ClassNotFoundException, SQLException{
+         String sql = "SELECT itemName,itemId,amount,purchasePrice,sellingPrice,status FROM item where itemId = '"+itemId+"'";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
+    
+    public static ResultSet getInfoForInfoTableOFSubCategories(String subCatName)throws ClassNotFoundException, SQLException{
+        String query = "SELECT subcategoryId FROM subcategory where subcategoryName = '" + subCatName + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String subCatId = "";
+        if (rst.next()) {
+            subCatId = rst.getString(1);
+        }
+        rst.close();
+        //   System.out.println("catId : "+ catId);
+        String query1 = "SELECT itemName,itemId,amount,purchasePrice,sellingPrice,status FROM item WHERE subcategoryId = '" + subCatId + "'";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(query1);
+    }
+    
+    public static ResultSet getInfoForInfoTableOFInvoiceSubCategories(String subCat) throws ClassNotFoundException, SQLException{
+        String query = "SELECT subcategoryId FROM subcategory where subcategoryName = '" + subCat + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String subCatId = "";
+        if (rst.next()) {
+            subCatId = rst.getString(1);
+        }
+        rst.close();
+        //   System.out.println("catId : "+ catId);
+        String query1 = "SELECT itemName,itemId,sellingPrice,amount FROM item WHERE subcategoryId = '" + subCatId + "'";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(query1);
+    }
+     
     public static int addItem(Item item) throws ClassNotFoundException, SQLException {
         Connection connection = DbConnection.getInstance().getConnection();
         connection.setAutoCommit(false);

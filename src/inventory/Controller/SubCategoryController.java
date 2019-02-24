@@ -135,6 +135,7 @@ public class SubCategoryController {
         return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
     }
     
+    
      public static SubCategory getSubCategory(String id) throws ClassNotFoundException, SQLException {
         String sql = "SELECT * FROM subcategory WHERE subcategoryId = '" + id + "'";
         ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
@@ -144,4 +145,41 @@ public class SubCategoryController {
         }
         return null;
     }
+     
+    public static String getSubCategoryNameByID(String id) throws SQLException, ClassNotFoundException {
+
+        String query = "SELECT subcategoryName  FROM subcategory where subcategoryId = '" + id + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String itemId = "";
+        if (rst.next()) {
+            itemId = rst.getString(1);
+        }
+        // rst.close();
+        return itemId;
+    }
+    
+    public static String getSubCategoryIdByName(String name) throws SQLException, ClassNotFoundException {
+
+        String query = "SELECT subcategoryId  FROM subcategory where subcategoryName = '" + name + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String itemId = "";
+        if (rst.next()) {
+            itemId = rst.getString(1);
+        }
+        // rst.close();
+        return itemId;
+    }
+    
+    
+    public static String getCategoryNameBySubCategoryId(String id) throws ClassNotFoundException, SQLException{
+        String query = "SELECT category.categoryName  FROM category join subcategory on subcategory.categoryId = category.categoryId where subcategory.subcategoryId = '" + id + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String itemId = "";
+        if (rst.next()) {
+            itemId = rst.getString(1);
+        }
+        // rst.close();
+        return itemId;
+    }
+    
 }

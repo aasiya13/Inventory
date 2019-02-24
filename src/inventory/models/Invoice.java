@@ -18,8 +18,9 @@ public class Invoice {
     private String lineTotal;
     private String date;
     private String total;
+    private String customerId;
 
-    public Invoice(String invoiceId, String itemId, String quantity, String unitType, String price, String lineTotal, String date, String total) {
+    public Invoice(String invoiceId, String itemId, String quantity, String unitType, String price, String lineTotal, String date, String total, String customerId) {
         this.invoiceId = invoiceId;
         this.itemId = itemId;
         this.quantity = quantity;
@@ -28,6 +29,7 @@ public class Invoice {
         this.lineTotal = lineTotal;
         this.date = date;
         this.total = total;
+        this.customerId = customerId;
     }
 
     public String getInvoiceId() {
@@ -92,6 +94,14 @@ public class Invoice {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
     
     

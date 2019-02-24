@@ -91,6 +91,16 @@ public class SupplierController {
         return null;
     }
     
+    public static String getSupplierId(String supplierName) throws ClassNotFoundException, SQLException{
+        String query = "SELECT supplierId FROM supplier WHERE supplierName = '"+supplierName+"'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String id = "";
+        if (rst.next()) {
+            id = rst.getString(1);
+        }
+        return id;
+    }
+    
      public static Supplier searchSupplier(String name) throws ClassNotFoundException, SQLException {
         String sql = "SELECT * FROM supplier WHERE supplierName = '" + name + "'";
         ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);

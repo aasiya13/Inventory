@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,7 +34,12 @@ public class CustomerFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form CustomerFrame
+     * 
+     * 
      */
+     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
+        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+     
     public CustomerFrame() {
         initComponents();
         init();
@@ -44,11 +51,18 @@ public class CustomerFrame extends javax.swing.JFrame {
         setResizable(false);
         tableStyle(customerTable);
         updateCustomerTable();
+        loyaltyCardTxt.setEditable(false);
+        CustomerIdTxt.setEditable(false);
 //        tableStyle(OrderTable);
 //        updateOrderTableInfoTable();
 //        updateItemTableInfoTable();
 //        getValesToComboBox(CategoryCombo, ItemController.getAllCategories());
 
+    }
+    
+    public static boolean validEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
     }
 
     public void close() {
@@ -104,14 +118,12 @@ public class CustomerFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        telTxt = new javax.swing.JTextField();
         nameTxt = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         addressTxt = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        dobTxt = new javax.swing.JTextField();
         emailTxt = new javax.swing.JTextField();
         nicTxt = new javax.swing.JTextField();
         AddBtn = new javax.swing.JButton();
@@ -119,6 +131,8 @@ public class CustomerFrame extends javax.swing.JFrame {
         UpdateBtn = new javax.swing.JButton();
         DeleteBtn = new javax.swing.JButton();
         genderCombo = new javax.swing.JComboBox<>();
+        dobTxt = new javax.swing.JFormattedTextField();
+        telTxt = new javax.swing.JFormattedTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -203,8 +217,6 @@ public class CustomerFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel5.setText("Contact No");
 
-        telTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
         nameTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         addressTxt.setColumns(20);
@@ -220,8 +232,6 @@ public class CustomerFrame extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel9.setText("Email");
-
-        dobTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         emailTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -270,6 +280,21 @@ public class CustomerFrame extends javax.swing.JFrame {
         genderCombo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         genderCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
 
+        try {
+            dobTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        dobTxt.setToolTipText("YYYY-MM-DD");
+        dobTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        try {
+            telTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        telTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -297,13 +322,13 @@ public class CustomerFrame extends javax.swing.JFrame {
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(telTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                             .addComponent(nameTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                             .addComponent(jScrollPane1)
-                            .addComponent(dobTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                             .addComponent(emailTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                             .addComponent(nicTxt)
-                            .addComponent(genderCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(genderCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dobTxt)
+                            .addComponent(telTxt))))
                 .addGap(42, 42, 42))
         );
         jPanel3Layout.setVerticalGroup(
@@ -319,16 +344,19 @@ public class CustomerFrame extends javax.swing.JFrame {
                     .addComponent(genderCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(32, 32, 32)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(dobTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(telTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(telTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nicTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -343,7 +371,7 @@ public class CustomerFrame extends javax.swing.JFrame {
                     .addComponent(ClearBtn)
                     .addComponent(UpdateBtn)
                     .addComponent(DeleteBtn))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -585,9 +613,16 @@ public class CustomerFrame extends javax.swing.JFrame {
     private void AddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddBtnActionPerformed
         try {
             // TODO add your handling code here:
-            Customer customer = new Customer(nameTxt.getText(), nicTxt.getText(), (String) genderCombo.getSelectedItem(), addressTxt.getText(), dobTxt.getText(), telTxt.getText(), emailTxt.getText(), loyaltyCardTxt.getText());
+            if(validEmail(emailTxt.getText())){
+            Customer customer = new Customer(nameTxt.getText(), nicTxt.getText(), (String) genderCombo.getSelectedItem(), addressTxt.getText(), dobTxt.getText(), telTxt.getText(), emailTxt.getText(), telTxt.getText(),"0");
+            loyaltyCardTxt.setText(telTxt.getText());
+            CustomerIdTxt.setText(nicTxt.getText());
             CustomerController.addCustomer(customer);
             updateCustomerTable();
+            }else{
+                emailTxt.setBackground(Color.red);
+                JOptionPane.showMessageDialog(rootPane, "Incorrect Email. Frmatt should be xxx@yy.zz");
+            }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(CustomerFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -646,7 +681,7 @@ public class CustomerFrame extends javax.swing.JFrame {
         if (p == 0) {
             try {
                 // TODO add your handling code here:
-                Customer customer = new Customer(nameTxt.getText(), nicTxt.getText(), (String) genderCombo.getSelectedItem(), addressTxt.getText(), dobTxt.getText(), telTxt.getText(), emailTxt.getText(), loyaltyCardTxt.getText());
+                Customer customer = new Customer(nameTxt.getText(), nicTxt.getText(), (String) genderCombo.getSelectedItem(), addressTxt.getText(), dobTxt.getText(), telTxt.getText(), emailTxt.getText(), loyaltyCardTxt.getText(),"0");
                 CustomerController.updateCustomer(customer);
                 updateCustomerTable();
             } catch (ClassNotFoundException | SQLException ex) {
@@ -715,8 +750,10 @@ public class CustomerFrame extends javax.swing.JFrame {
         telTxt.setText(null);
         emailTxt.setText(null);
         loyaltyCardTxt.setText(null);
+        CustomerIdTxt.setText(null);
     }
 
+    
     /**
      * @param args the command line arguments
      */
@@ -766,7 +803,7 @@ public class CustomerFrame extends javax.swing.JFrame {
     private javax.swing.JButton UpdateBtn;
     private javax.swing.JTextArea addressTxt;
     private javax.swing.JTable customerTable;
-    private javax.swing.JTextField dobTxt;
+    private javax.swing.JFormattedTextField dobTxt;
     private javax.swing.JTextField emailTxt;
     private javax.swing.JComboBox<String> genderCombo;
     private javax.swing.JLabel jLabel1;
@@ -792,6 +829,6 @@ public class CustomerFrame extends javax.swing.JFrame {
     private javax.swing.JTextField loyaltyCardTxt;
     private javax.swing.JTextField nameTxt;
     private javax.swing.JTextField nicTxt;
-    private javax.swing.JTextField telTxt;
+    private javax.swing.JFormattedTextField telTxt;
     // End of variables declaration//GEN-END:variables
 }

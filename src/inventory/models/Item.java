@@ -20,8 +20,10 @@ public class Item {
     private String purchasePrice;
     private String sellingPrice;
     private String status;
+    private String expireDate;
+    private String stockLimit;
 
-    public Item(String itemId, String subcategoryId, String brandId, String itemName, String quantity, String amount, String supplierId, String purchasePrice, String sellingPrice, String status) {
+    public Item(String itemId, String subcategoryId, String brandId, String itemName, String quantity, String amount, String supplierId, String purchasePrice, String sellingPrice, String status, String stockLimit, String expireDate) {
         this.itemId = itemId;
         this.subcategoryId = subcategoryId;
         this.brandId = brandId;
@@ -32,6 +34,8 @@ public class Item {
         this.purchasePrice = purchasePrice;
         this.sellingPrice = sellingPrice;
         this.status = status;
+        this.expireDate = expireDate;
+        this.stockLimit = stockLimit;
     }
 
     public String getItemId() {
@@ -113,4 +117,22 @@ public class Item {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(String expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    public String getStockLimit() {
+        return stockLimit;
+    }
+
+    public void setStockLimit(String stockLimit) {
+        this.stockLimit = stockLimit;
+    }
+    
+    
 }

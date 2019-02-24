@@ -18,8 +18,10 @@ public class Customer {
     private String tel;
     private String email;
     private String loyaltyCard;
+    private String points;
+    
 
-    public Customer(String name, String nic, String gender, String address, String dob, String tel, String email, String loyaltyCard) {
+    public Customer(String name, String nic, String gender, String address, String dob, String tel, String email, String loyaltyCard, String points) {
         this.name = name;
         this.nic = nic;
         this.gender = gender;
@@ -28,6 +30,7 @@ public class Customer {
         this.tel = tel;
         this.email = email;
         this.loyaltyCard = loyaltyCard;
+        this.points = points;
     }
     
 
@@ -93,6 +96,14 @@ public class Customer {
 
     public void setLoyaltyCard(String loyaltyCard) {
         this.loyaltyCard = loyaltyCard;
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
     }
     
     

@@ -147,6 +147,27 @@ public class ItemController {
         return itemId;
     }
     
+    public static ResultSet getInfoForupdateReOrderTableTable() throws ClassNotFoundException, SQLException{
+        String query1 = "SELECT itemName,amount,stockLimit FROM item WHERE stockLimit >= amount";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(query1);
+    }
+    
+    public static String getCountOfReOrderTable() throws SQLException, ClassNotFoundException {
+
+        String query = "SELECT count(*) FROM item WHERE stockLimit >= amount";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String count = "";
+        if (rst.next()) {
+            count = rst.getString(1);
+        }
+        return count;
+    }
+    
+    public static ResultSet getInfoForGrnTable(String supplierId) throws ClassNotFoundException, SQLException{
+        String query1 = "SELECT itemName,itemId,purchasePrice,unit_size,expireDate FROM item WHERE supplierId = '" + supplierId + "'";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(query1);
+    }
+    
      public static ResultSet getItemById(String id) throws SQLException, ClassNotFoundException {
          
          String itemId = "IT" + id;
@@ -166,6 +187,11 @@ public class ItemController {
         // rst.close();
         return itemId;
     }
+    
+      public static ResultSet getInfoForExpireTable() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT itemId,itemName,expireDate FROM item ORDER BY expireDate";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
 
     public static String getSupplierName(String id) throws SQLException, ClassNotFoundException {
 
@@ -177,6 +203,18 @@ public class ItemController {
         }
         // rst.close();
         return supName;
+    }
+    
+    public static String getStockAmount(String id) throws SQLException, ClassNotFoundException {
+
+        String query = "SELECT amount  FROM item where itemId = '" + id + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        String amount = "";
+        if (rst.next()) {
+            amount = rst.getString(1);
+        }
+        // rst.close();
+        return amount;
     }
     
     public static String getUnitSize(String itemId) throws ClassNotFoundException, SQLException{
@@ -206,7 +244,17 @@ public class ItemController {
         ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
         Item item = null;
         if (rst.next()) {
-            item = new Item(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6), getSupplierName(rst.getString(7)), rst.getString(8), rst.getString(9), rst.getString(10));
+            item = new Item(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6), getSupplierName(rst.getString(7)), rst.getString(8), rst.getString(9), rst.getString(10),rst.getString(11),rst.getString(12));
+        }
+        return item;
+    }
+    
+    public static Item getForSearchById(String itemId) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM item where itemId = '" + itemId + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(query);
+        Item item = null;
+        if (rst.next()) {
+            item = new Item(rst.getString(1), rst.getString(2), rst.getString(3), rst.getString(4), rst.getString(5), rst.getString(6), getSupplierName(rst.getString(7)), rst.getString(8), rst.getString(9), rst.getString(10),rst.getString(11),rst.getString(12));
         }
         return item;
     }
@@ -218,6 +266,11 @@ public class ItemController {
 
      public static ResultSet getInfoForInfoTable() throws ClassNotFoundException, SQLException {
         String sql = "SELECT itemName,itemId,amount,purchasePrice,sellingPrice,status FROM item";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
+     
+    public static ResultSet getInfoForInfoTable(String id) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT itemName,itemId,amount,purchasePrice,sellingPrice,status FROM item where itemId = '"+id+"'";
         return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
     }
     
@@ -305,7 +358,7 @@ public class ItemController {
             s.close();
             //   System.out.println("temp ID " + tempId);
 
-            String addQuery = "INSERT INTO item VALUES(?,?,?,?,?,?,?,?,?,?)";
+            String addQuery = "INSERT INTO item VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement pre_stm = connection.prepareStatement(addQuery);
             pre_stm.setString(1, tempId);
             pre_stm.setString(2, subCatId);
@@ -317,6 +370,8 @@ public class ItemController {
             pre_stm.setString(8, item.getPurchasePrice());
             pre_stm.setString(9, item.getSellingPrice());
             pre_stm.setString(10, item.getStatus());
+            pre_stm.setString(11, item.getStockLimit());
+            pre_stm.setString(12, item.getExpireDate());
 
             int res = pre_stm.executeUpdate();
             if (res > 0) {
@@ -358,19 +413,55 @@ public class ItemController {
     }
 
     public static void updateItem(Item item) throws SQLException, ClassNotFoundException {
+       Connection connection = DbConnection.getInstance().getConnection();
+        connection.setAutoCommit(false);
+        try {
+        String updateQuery = "UPDATE item SET subcategoryId = ?,brandId = ?,"+ 
+                                "amount = ?, supplierId =?,purchasePrice=?,sellingPrice=?,status=?,"+
+                                    "stockLimit=?, expireDate=? where itemId =?";     
+            PreparedStatement pre_stm = connection.prepareStatement(updateQuery);
+         
+            pre_stm.setString(1, item.getSubcategoryId());
+            pre_stm.setString(2, item.getBrandId());
+            pre_stm.setString(3, item.getAmount());
+            pre_stm.setString(4, item.getSupplierId());
+            pre_stm.setString(5, item.getPurchasePrice());
+            pre_stm.setString(6, item.getSellingPrice());
+            pre_stm.setString(7, item.getStatus());
+            pre_stm.setString(8, item.getStockLimit());
+            pre_stm.setString(9, item.getExpireDate());
+            pre_stm.setString(10, item.getItemId());
+         
+            int res = pre_stm.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "Successfully Updated..");
+                 pre_stm.close();
+                }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
+    
+    public static void updateItemQuantity(String id, String qty) throws ClassNotFoundException, SQLException{
+        
         Connection connection = DbConnection.getInstance().getConnection();
         connection.setAutoCommit(false);
         try {
-            String sql = "DELETE FROM item WHERE itemName=?";
-            PreparedStatement pre_stm = connection.prepareStatement(sql);
-            pre_stm.setString(1, item.getItemName());
-
+        String updateQuery = "UPDATE item SET amount=? where itemId =?";     
+            PreparedStatement pre_stm = connection.prepareStatement(updateQuery);
+         
+            pre_stm.setString(1, qty);
+            pre_stm.setString(2, id);
+            
             int res = pre_stm.executeUpdate();
             if (res > 0) {
-                //  JOptionPane.showMessageDialog(null, "Successfully Deleted");
-                pre_stm.close();
-                addItem(item);
-            }
+                
+                 pre_stm.close();
+                }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
             connection.rollback();

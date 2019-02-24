@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b150e933-8067-4e49-9089-ebfa98eb38f3">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="314" height="47" uuid="303a70f2-2633-4fd5-8853-8058993cf1cf"/>
+				<textElement>
+					<font size="36"/>
+				</textElement>
+				<text><![CDATA[Sampath Food City]]></text>
+			</staticText>
+			<image>
+				<reportElement x="413" y="0" width="125" height="79" uuid="7a0c0774-49e7-4f8e-9114-ad313fae4cb4"/>
+				<imageExpression><![CDATA["D:\\Mine\\Java\\Inventory\\Inventory\\src\\inventory\\ui\\img\\sampath.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="47" width="301" height="16" uuid="d836f4b1-3c7d-47a2-a7b7-c0ff0c726ee8"/>
+				<text><![CDATA[No 121/A, Sampath Head Office, r weilign road, Matugama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="66" width="212" height="20" uuid="93daeaf1-93d0-4e52-ae82-9772da654017"/>
+				<text><![CDATA[Tel 03423289103 / 032 11223323]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+            <text>INVOICE</text>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

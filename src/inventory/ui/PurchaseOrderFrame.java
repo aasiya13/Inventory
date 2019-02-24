@@ -56,12 +56,13 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
             setResizable(false);
             tableStyle(ItemTable);
             UpdatePurcahseOrderTbl();
-            tableStyle(PurcahseOrderTbl);
+            tableStyle(ReturnTable);
             updateItemTableInfoTable();
             tableStyle(OrderTable);
             updateOrderTableInfoTable();
             getValesToComboBox(CategoryCombo, ItemController.getAllCategories());
             getValesToComboBox(SupplierCombo, ItemController.getAllSuppliers());
+            getValesToComboBox(SearchSupplierCombo, ItemController.getAllSuppliers());
             getDate();
             updatePurcahseOrderTblTable();
         } catch (SQLException | ClassNotFoundException ex) {
@@ -115,7 +116,7 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
     
     public void updatePurcahseOrderTblTable() throws ClassNotFoundException, SQLException {
         ResultSet resultSet = PurchaseOrderController.getInfoForPurcahseOrderTblTable();
-        PurcahseOrderTbl.setModel(DbUtils.resultSetToTableModel(resultSet));
+        ReturnTable.setModel(DbUtils.resultSetToTableModel(resultSet));
     }
 
     public void updateOrderTableInfoTable() {
@@ -147,16 +148,16 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
     }
     
     public void UpdatePurcahseOrderTbl(){
-        TableColumn col = PurcahseOrderTbl.getColumnModel().getColumn(0);
+        TableColumn col = ReturnTable.getColumnModel().getColumn(0);
         col.setHeaderValue("Purchase NO");
         col.setPreferredWidth(120);
-        TableColumn col2 = PurcahseOrderTbl.getColumnModel().getColumn(1);
+        TableColumn col2 = ReturnTable.getColumnModel().getColumn(1);
         col2.setHeaderValue("Date");
         col2.setPreferredWidth(60);
-        TableColumn col4 = PurcahseOrderTbl.getColumnModel().getColumn(2);
+        TableColumn col4 = ReturnTable.getColumnModel().getColumn(2);
         col4.setHeaderValue("Supplier");
         col4.setPreferredWidth(60);
-        TableColumn col3 = PurcahseOrderTbl.getColumnModel().getColumn(3);
+        TableColumn col3 = ReturnTable.getColumnModel().getColumn(3);
         col3.setHeaderValue("Status");
         col3.setPreferredWidth(60);
         
@@ -206,12 +207,12 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         SearchPurIdTxt = new javax.swing.JTextField();
-        jComboBox4 = new javax.swing.JComboBox<>();
         jComboBox5 = new javax.swing.JComboBox<>();
         jButton6 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        SearchSupplierCombo = new javax.swing.JComboBox<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        PurcahseOrderTbl = new javax.swing.JTable();
+        ReturnTable = new javax.swing.JTable();
         OrderDeleteBtn = new javax.swing.JButton();
         OrderClearBtn = new javax.swing.JButton();
         SaveBtn = new javax.swing.JButton();
@@ -495,8 +496,6 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
             }
         });
 
-        jComboBox4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
         jComboBox5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jButton6.setBackground(new java.awt.Color(0, 51, 102));
@@ -506,6 +505,9 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("PUR");
+
+        SearchSupplierCombo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        SearchSupplierCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Supplier" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -518,15 +520,17 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
                     .addComponent(jLabel13)
                     .addComponent(jLabel12))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SearchPurIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(SearchPurIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(30, 30, 30)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SearchSupplierCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -537,10 +541,10 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
                     .addComponent(jLabel11)
                     .addComponent(SearchPurIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(SearchSupplierCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -549,7 +553,7 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
                 .addGap(25, 25, 25))
         );
 
-        PurcahseOrderTbl.setModel(new javax.swing.table.DefaultTableModel(
+        ReturnTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -560,14 +564,14 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        PurcahseOrderTbl.setShowHorizontalLines(false);
-        PurcahseOrderTbl.setShowVerticalLines(false);
-        PurcahseOrderTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+        ReturnTable.setShowHorizontalLines(false);
+        ReturnTable.setShowVerticalLines(false);
+        ReturnTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PurcahseOrderTblMouseClicked(evt);
+                ReturnTableMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(PurcahseOrderTbl);
+        jScrollPane3.setViewportView(ReturnTable);
 
         OrderDeleteBtn.setBackground(new java.awt.Color(0, 51, 102));
         OrderDeleteBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -913,7 +917,7 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
         //    ArrayList<String> itemIds = new ArrayList<>();
             ArrayList<PurchaseItem> purchase = new ArrayList<>();
             String purchaseId = PurchaseOrderController.getPurchaseId();
-            System.out.println(OrderTable.getRowCount());
+        //    System.out.println(OrderTable.getRowCount());
             for(int i = 0;i < OrderTable.getRowCount();i++){
              purchase.add(new PurchaseItem(purchaseId, OrderTable.getModel().getValueAt(i, 1).toString() ,DateLbl.getText(), (String)statusCombo.getSelectedItem(),"SUP001", OrderTable.getModel().getValueAt(i, 2).toString(), OrderTable.getModel().getValueAt(i, 3).toString(), OrderTable.getModel().getValueAt(i, 4).toString(), OrderTable.getModel().getValueAt(i, 5).toString() ));
             }
@@ -927,18 +931,18 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_SaveBtnActionPerformed
 
-    private void PurcahseOrderTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PurcahseOrderTblMouseClicked
+    private void ReturnTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReturnTableMouseClicked
         try {
             // TODO add your handling code here:
-            int row = PurcahseOrderTbl.getSelectedRow();
-            String purchId = PurcahseOrderTbl.getModel().getValueAt(row, 0).toString();
+            int row = ReturnTable.getSelectedRow();
+            String purchId = ReturnTable.getModel().getValueAt(row, 0).toString();
             PurchaseIdLbl.setText(purchId);
           ResultSet resultSet = PurchaseOrderController.getInfoForOrderTblByPurchase(purchId);
           OrderTable.setModel(DbUtils.resultSetToTableModel(resultSet));
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(PurchaseOrderFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_PurcahseOrderTblMouseClicked
+    }//GEN-LAST:event_ReturnTableMouseClicked
 
     private void SearchPurIdTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SearchPurIdTxtKeyReleased
         // TODO add your handling code here:
@@ -947,7 +951,7 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
             String purSearch = "PUR" + SearchPurIdTxt.getText();
 
             ResultSet resultSet = PurchaseOrderController.getInfoForPurcahseOrderTblTable(purSearch);
-            PurcahseOrderTbl.setModel(DbUtils.resultSetToTableModel(resultSet));
+            ReturnTable.setModel(DbUtils.resultSetToTableModel(resultSet));
             setColumnHeaderItemtable();
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(PurchaseOrderFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1011,18 +1015,18 @@ public class PurchaseOrderFrame extends javax.swing.JFrame {
     private javax.swing.JButton OrderClearBtn;
     private javax.swing.JButton OrderDeleteBtn;
     private javax.swing.JTable OrderTable;
-    private javax.swing.JTable PurcahseOrderTbl;
     private javax.swing.JLabel PurchaseIdLbl;
     private javax.swing.JTextField QuantitiyTxt;
     private javax.swing.JButton ResetBtn;
+    private javax.swing.JTable ReturnTable;
     private javax.swing.JButton SaveBtn;
     private javax.swing.JTextField SearchPurIdTxt;
+    private javax.swing.JComboBox<String> SearchSupplierCombo;
     private javax.swing.JComboBox<String> SubCategoryCombo;
     private javax.swing.JComboBox<String> SupplierCombo;
     private javax.swing.JLabel TotalLbl;
     private javax.swing.JTextField itemSearchTxt;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

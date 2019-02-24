@@ -84,7 +84,6 @@ public final class EmployeeForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         AdressTxt = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
-        DateOfBirthTxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         DesignationTxt = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -119,8 +118,9 @@ public final class EmployeeForm extends javax.swing.JFrame {
         SearchBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         EmployeeInfoTable = new javax.swing.JTable();
-        AssignDateTxt = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
+        DateOfBirthTxt = new javax.swing.JFormattedTextField();
+        AssignDateTxt = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -202,8 +202,6 @@ public final class EmployeeForm extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Civil Status");
 
-        DateOfBirthTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Permenent No.");
 
@@ -228,6 +226,11 @@ public final class EmployeeForm extends javax.swing.JFrame {
         jLabel11.setText("Email");
 
         EmailTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        EmailTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EmailTxtActionPerformed(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel13.setText("Name");
@@ -461,6 +464,7 @@ public final class EmployeeForm extends javax.swing.JFrame {
         ));
         EmployeeInfoTable.setGridColor(new java.awt.Color(0, 51, 102));
         EmployeeInfoTable.setSelectionBackground(new java.awt.Color(0, 51, 102));
+        EmployeeInfoTable.setShowHorizontalLines(false);
         EmployeeInfoTable.setShowVerticalLines(false);
         EmployeeInfoTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -490,10 +494,31 @@ public final class EmployeeForm extends javax.swing.JFrame {
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
-        AssignDateTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Assign Date");
+
+        try {
+            DateOfBirthTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        DateOfBirthTxt.setToolTipText("YYYY-M-D");
+        DateOfBirthTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        DateOfBirthTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        DateOfBirthTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DateOfBirthTxtActionPerformed(evt);
+            }
+        });
+
+        try {
+            AssignDateTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        AssignDateTxt.setToolTipText("YYYY-M-D");
+        AssignDateTxt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        AssignDateTxt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -520,19 +545,18 @@ public final class EmployeeForm extends javax.swing.JFrame {
                                     .addComponent(jLabel12)
                                     .addComponent(jLabel10))
                                 .addGap(75, 75, 75)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(MobileNoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(NameTxt)
-                                .addComponent(CivilStatusCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(GenderCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, 228, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1)
-                                .addComponent(DateOfBirthTxt, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addComponent(PermenentNoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(NicTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EmailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(AssignDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(DesignationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(MobileNoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                            .addComponent(NameTxt)
+                            .addComponent(CivilStatusCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(GenderCombo, javax.swing.GroupLayout.Alignment.TRAILING, 0, 228, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(PermenentNoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                            .addComponent(NicTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                            .addComponent(EmailTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                            .addComponent(DesignationTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                            .addComponent(DateOfBirthTxt)
+                            .addComponent(AssignDateTxt)))
                     .addComponent(jLabel7)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
@@ -571,10 +595,10 @@ public final class EmployeeForm extends javax.swing.JFrame {
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(98, 98, 98)
+                                .addGap(99, 99, 99)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel5)
-                                    .addComponent(DateOfBirthTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(DateOfBirthTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel8)
@@ -591,11 +615,11 @@ public final class EmployeeForm extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel11)
                                     .addComponent(EmailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(AssignDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING))
-                                .addGap(26, 26, 26)
+                                .addGap(24, 24, 24)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(AssignDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(24, 24, 24)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(DesignationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel10)))
@@ -646,6 +670,7 @@ public final class EmployeeForm extends javax.swing.JFrame {
             new MainFrame().setVisible(true);
 
         } catch (Exception e) {
+            Logger.getLogger(InvoiceFrame.class.getName()).log(Level.SEVERE, null, e);
             JOptionPane.showMessageDialog(rootPane, e);
         } finally {
             try {
@@ -734,28 +759,43 @@ public final class EmployeeForm extends javax.swing.JFrame {
 
     private void EmployeeAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmployeeAddBtnActionPerformed
         // TODO add your handling code here:
+         if (fileName != null) {
         try {
             File image = new File(fileName);
-            FileInputStream fis = new FileInputStream(image);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] buf = new byte[1024];
-            for (int readNum; (readNum = fis.read(buf)) != -1;) {
-                bos.write(buf, 0, readNum);
-            }
-            person_image = bos.toByteArray();
-        } catch (IOException e) {
+           
+                FileInputStream fis = new FileInputStream(image);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1024];
+                for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                    bos.write(buf, 0, readNum);
+                }
+                person_image = bos.toByteArray();
+            }catch (IOException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        Employee employee = new Employee("EM0001", NameTxt.getText(), (String) GenderCombo.getSelectedItem(), (String) CivilStatusCombo.getSelectedItem(), AdressTxt.getText(), DateOfBirthTxt.getText(), NicTxt.getText(), PermenentNoTxt.getText(), MobileNoTxt.getText(), EmailTxt.getText(), DesignationTxt.getText(), AssignDateTxt.getText(), person_image);
-        try {
-            int res = EmployeeController.addEmployee(employee);
-            if (res > 0) {
-                dispose();
+            Employee employee = new Employee("EM0001", NameTxt.getText(), (String) GenderCombo.getSelectedItem(), (String) CivilStatusCombo.getSelectedItem(), AdressTxt.getText(), DateOfBirthTxt.getText(), NicTxt.getText(), PermenentNoTxt.getText(), MobileNoTxt.getText(), EmailTxt.getText(), DesignationTxt.getText(), AssignDateTxt.getText(), person_image);
+            try {
+                int res = EmployeeController.addEmployee(employee);
+                if (res > 0) {
+                    dispose();
+                }
+                updateEmployeeInfoTable();
+            } catch (SQLException | ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex);
             }
-            updateEmployeeInfoTable();
-        } catch (SQLException | ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex);
-        }
+        }else{
+             try {
+                 Employee employee1 = new Employee("EM0001", NameTxt.getText(), (String) GenderCombo.getSelectedItem(), (String) CivilStatusCombo.getSelectedItem(), AdressTxt.getText(), DateOfBirthTxt.getText(), NicTxt.getText(), PermenentNoTxt.getText(), MobileNoTxt.getText(), EmailTxt.getText(), DesignationTxt.getText(), AssignDateTxt.getText(), null);
+ 
+                 int res = EmployeeController.addEmployee(employee1);
+                 if (res > 0) {
+                     dispose();
+                 }
+                 updateEmployeeInfoTable();
+             } catch (SQLException | ClassNotFoundException ex) {
+                 Logger.getLogger(EmployeeForm.class.getName()).log(Level.SEVERE, null, ex);
+             }
+         }
         //   System.out.println(employee);
 
         //   System.out.println(employee);
@@ -789,6 +829,14 @@ public final class EmployeeForm extends javax.swing.JFrame {
     private void GenderComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenderComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_GenderComboActionPerformed
+
+    private void EmailTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EmailTxtActionPerformed
+
+    private void DateOfBirthTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DateOfBirthTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DateOfBirthTxtActionPerformed
 
     private void updateEmployeeInfoTable() {
         try {
@@ -887,10 +935,10 @@ public final class EmployeeForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AdressTxt;
-    private javax.swing.JTextField AssignDateTxt;
+    private javax.swing.JFormattedTextField AssignDateTxt;
     private javax.swing.JComboBox<String> CivilStatusCombo;
     private javax.swing.JButton ClearBtn;
-    private javax.swing.JTextField DateOfBirthTxt;
+    private javax.swing.JFormattedTextField DateOfBirthTxt;
     private javax.swing.JButton DeleteBtn;
     private javax.swing.JTextField DesignationTxt;
     private javax.swing.JTextField EmailTxt;

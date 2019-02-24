@@ -25,6 +25,16 @@ public class PurchaseOrderController {
         String sql = "SELECT itemName,itemId,amount,sellingPrice FROM item";
         return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
     }
+    
+    public static ResultSet getInfoForItemTableReturnStock() throws ClassNotFoundException, SQLException {
+        String sql = "SELECT itemName,itemId,amount,purchasePrice FROM item";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
+    
+     public static ResultSet getInfoForPurchaseReport(String id) throws ClassNotFoundException, SQLException {
+        String sql = "select purchase.supplierId, item.itemName, purchaseorder.itemId, purchaseorder.quantity, purchaseorder.unitPrice, purchaseorder.lineTotal from purchaseorder join purchase on purchaseorder.purchaseId = purchase.purchaseId join item on purchaseorder.itemId = item.itemId where purchaseorder.purchaseId = '"+id+"'";
+        return DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+    }
 
     public static ResultSet getInfoForOrderTblByPurchase(String purchaseId) throws ClassNotFoundException, SQLException {
         String sql = "select item.itemName,purchaseorder.ItemId,purchaseorder.quantity,purchaseorder.unitType,purchaseOrder.unitPrice,purchaseOrder.lineTotal from purchaseOrder join item on purchaseOrder.ItemId = item.itemId where purchaseorder.purchaseId = '"+purchaseId+"'";

@@ -37,6 +37,9 @@ public class SubCategoryForm extends javax.swing.JFrame {
     /**
      * Creates new form SubCategoryForm
      */
+    
+    DefaultListModel dlm = new DefaultListModel();
+    
     public SubCategoryForm() throws SQLException, ClassNotFoundException {
         initComponents();
         init();
@@ -549,16 +552,18 @@ public class SubCategoryForm extends javax.swing.JFrame {
     private void AddToListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddToListBtnActionPerformed
         // TODO add your handling code here:
         SubCategoryController.addSubList(BrandList.getSelectedValue());
-        DefaultListModel dlm = new DefaultListModel();
-        for (String s : SubCategoryController.getSubList()) {
-            dlm.addElement(s);
-        }
+        String itm = BrandList.getSelectedValue();
+     
+        dlm.addElement(itm);
+//        for (String s : SubCategoryController.getSubList()) {
+//            dlm.addElement(s);
+//        }
         SubBrandList.setModel(dlm);
     }//GEN-LAST:event_AddToListBtnActionPerformed
 
     private void ListClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListClearBtnActionPerformed
         // TODO add your handling code here:
-        DefaultListModel dlm = new DefaultListModel();
+    //    DefaultListModel dlm = new DefaultListModel();
         dlm.addElement(null);
         SubBrandList.setModel(dlm);
         SubCategoryController.removeAll();

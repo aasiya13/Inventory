@@ -80,6 +80,15 @@ public class BrandController {
         }
         return null;
     }
+    
+     public static String getBrandIdByBrandName(String name) throws ClassNotFoundException, SQLException {
+        String sql = "SELECT brandId FROM brand WHERE brandName = '" + name + "'";
+        ResultSet rst = DbConnection.getInstance().getConnection().createStatement().executeQuery(sql);
+        if (rst.next()) {
+            return "";
+        }
+        return null;
+    }
 
     public static ArrayList<Brand> getAllBrands() throws ClassNotFoundException, SQLException {
         String query = "SELECT * FROM brand";
